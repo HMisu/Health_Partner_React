@@ -1,0 +1,60 @@
+@import './utils.scss';
+
+header {
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  align-items: center;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+  > div, nav {
+    display: flex;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
+  }
+
+  .logo {
+    width: 25%;
+    justify-content: start;
+
+    img {
+      width: 30px;
+      margin-right: 5px;
+    }
+
+    span {
+      color: $deep-gray;
+      font-size: 22px;
+      font-family: "Staatliches", sans-serif;
+    }
+  }
+
+  nav {
+    width: 50%;
+    justify-content: center;
+
+    ul {
+      display: flex;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .user-container {
+    width: 25%;
+    justify-content: end;
+
+    svg {
+      color: $deep-gray;
+      font-size: 25px;
+      margin-right: 20px;
+    }
+
+    img {
+      width: 30px;
+      margin-right: 5px;
+    }
+  }
+}
