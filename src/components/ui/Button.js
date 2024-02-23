@@ -1,3 +1,5 @@
+import '../../scss/ui/Button.scss';
+
 const Button = ({text, type, onClick}) => {
     // 이상한 타입값이 전달되면 무조건 default로 변환
     const btnType = ["positive", "negative"].includes(type) ? type : "default";

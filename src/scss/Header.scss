@@ -1,11 +1,10 @@
-@import './utils.scss';
+@import './utils';
 
 header {
   display: flex;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px 10px;
   align-items: center;
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family: $pretendard;
 
   > div, nav {
     display: flex;
@@ -21,12 +20,14 @@ header {
     img {
       width: 30px;
       margin-right: 5px;
+      cursor: pointer;
     }
 
     span {
       color: $deep-gray;
       font-size: 22px;
       font-family: "Staatliches", sans-serif;
+      cursor: pointer;
     }
   }
 
@@ -48,13 +49,15 @@ header {
 
     svg {
       color: $deep-gray;
-      font-size: 25px;
+      font-size: 30px;
       margin-right: 20px;
+      cursor: pointer;
     }
 
     img {
       width: 30px;
       margin-right: 5px;
+      cursor: pointer;
     }
   }
 }

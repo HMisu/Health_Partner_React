@@ -1,0 +1,92 @@
+@import './utils';
+
+.RecommendModal {
+  .emotion {
+    width: 40px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .recommend-comment {
+    margin-bottom: 40px;
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .kcal {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: $deep-red;
+    }
+
+    .description {
+      font-size: 12px;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .recommend-title {
+    margin-bottom: 5px;
+  }
+}
+
+.FoodList {
+  display: flex;
+}
+
+.FoodItem {
+  position: relative;
+
+  img {
+    width: 120px;
+    height: 120px;
+    margin: 5px;
+    border-radius: 8px;
+    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+
+  .caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    margin: 5px;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: white;
+    display: flex; /* Flexbox를 활성화합니다. */
+    flex-direction: column; /* 자식 요소들을 세로 방향으로 배치합니다. */
+    justify-content: center; /* 자식 요소들을 수직 중앙으로 정렬합니다. */
+    align-items: center; /* 자식 요소들을 수평 중앙으로 정렬합니다. */
+
+    .name {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .nutrient {
+      font-size: 10px;
+    }
+  }
+}
+
+.FoodItem:hover .caption {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

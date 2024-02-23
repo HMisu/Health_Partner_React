@@ -1,10 +1,16 @@
 $violet: #6e7bfb;
 $bright-violet: #c3c8fc;
+$blue: #0066DD;
+$bright-blue: #B8D0EC;
+$bright-sky: #BDE5FA;
+$bright-navy: #516590;
 $pink: #fa607d;
 $green: #3ed7a0;
 $red: #fd565f;
+$deep-red: #CD4646;
 $deep-gray: #444444;
-$right-gray: #ebebeb;
+$gray: #999999;
+$bright-gray: #F4F6F9;
 
 $pretendard: "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif";
 @import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
@@ -18,10 +24,35 @@ $pretendard: "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFo
   }
 }
 
-.App {
-  > div, > section {
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
+h1 {
+  font-size: 30px;
+}
+
+h4 {
+  width: 100%;
+  margin: 10px 0;
+  font-size: 18px;
+
+  img {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-right: 4px;
   }
+}
+
+h6 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.MuiInputLabel-root {
+  font-size: 14px !important;
 }
 
 // 기본으로 작성되는 CSS는 1199px보다 큰 화면에서 작동 됩니다.

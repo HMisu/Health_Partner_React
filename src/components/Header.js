@@ -3,7 +3,7 @@ import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {SvgIcon} from "@mui/material";
-import Menu from "./ui/Menu";
+import Tab from "./ui/Tab";
 import React from "react";
 
 import '../scss/Header.scss';
@@ -17,9 +17,9 @@ const Header = () => {
             </div>
             <nav>
                 <ul>
-                    <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/home"} isSelected={true}/>
-                    <Menu text={<SvgIcon component={EventNoteOutlinedIcon}/>} href={"/todo"}/>
-                    <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/record"}/>
+                    <Tab text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/home"} isSelected={true}/>
+                    <Tab text={<SvgIcon component={EventNoteOutlinedIcon}/>} href={"/todo"}/>
+                    <Tab text={<SvgIcon component={BookOutlinedIcon}/>} href={"/record"}/>
                 </ul>
             </nav>
             <div className="user-container">

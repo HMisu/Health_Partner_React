@@ -1,19 +1,21 @@
 import EditHeightWeight from "./EditHeightWeight";
 import EatingMealList from "./EatingMealList";
 import {getStringDate} from "../../util/date";
-import Button from "../ui/Button";
+import React from "react";
+
+const mealList = ["breakfast", "lunch", "snack"];
 
 const UserInfoModal = () => {
+
     return (
         <div className="UserInfoModal">
-            <div>Today : {getStringDate(new Date())}</div>
+            <div><span className="date">Today : {getStringDate(new Date())}</span></div>
             <div className="EditHeightWeight">
                 <EditHeightWeight/>
             </div>
-            <div className="EatingMealList">
+            <div>
                 <h4>Today's Meal</h4>
-                <Button text={"Registration of meal"} type={"positive"}/>
-                <EatingMealList/>
+                <EatingMealList mealList={mealList}/>
             </div>
         </div>
     );

@@ -1,0 +1,20 @@
+@import '../../utils';
+
+.Nav {
+  display: flex;
+  align-items: center;
+
+  > div {
+    display: flex;
+    width: 50%;
+  }
+
+  .left {
+    color: $deep-gray;
+    justify-content: left;
+  }
+
+  .right {
+    justify-content: right;
+  }
+}

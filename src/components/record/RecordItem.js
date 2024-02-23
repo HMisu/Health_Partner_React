@@ -1,27 +1,20 @@
-import {Box, Checkbox, FormControl, FormControlLabel, FormGroup} from "@mui/material";
+import React from "react";
+import CheckList from "./CheckList";
 
-const RecordItem = () => {
+const RecordItem = ({id, title, diary, checklist, meal, date, color}) => {
     return (
-        <article className="UserInfoItem">
-            <div className="thumbnail"></div>
+        <article className="RecordItem">
+            <div className="thumbnail" style={{backgroundColor: color}}></div>
             <div className="info">
-                <h6 className="title">
-                    오늘의 건강 기록
+                <h6>
+                    <a href="#">{title}</a>
                 </h6>
                 <div className="checklist">
-                    <Box sx={{display: 'flex'}}>
-                        <FormControl sx={{m: 3}} component="fieldset" variant="standard">
-                            <FormGroup>
-                                <FormControlLabel name="label1" control={<Checkbox defaultChecked/>} label="물 1L 마시기"/>
-                                <FormControlLabel name="label2" control={<Checkbox/>} label="영양제 먹기"/>
-                                <FormControlLabel name="label3" control={<Checkbox/>} label="유산소"/>
-                            </FormGroup>
-                        </FormControl>
-                    </Box>
+                    <CheckList checklist={checklist}/>
                 </div>
             </div>
         </article>
     );
 };
 
-export default RecordItem;
+export default React.memo(RecordItem);
