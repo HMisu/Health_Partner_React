@@ -1,0 +1,144 @@
+@import './utils';
+
+.MuiBox-root, .MuiFormGroup-root {
+  width: 100%;
+
+  button {
+    border: none;
+    border-radius: 8px;
+    margin-left: 4px;
+
+    svg {
+      color: white;
+      font-size: 12px;
+    }
+
+  }
+
+  .delete {
+    background-color: $red;
+  }
+
+  .edit {
+    background-color: $deep-gray;
+  }
+}
+
+.css-1nrlq1o-MuiFormControl-root {
+  width: 100%;
+}
+
+.MuiFormControlLabel-root {
+  width: 80%;
+}
+
+.css-gvgjr8-MuiTypography-root {
+  font-size: 14px !important;
+}
+
+.RecordDetail {
+  .MuiFormControl-root, .meal-list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .edit-meal {
+    display: flex;
+  }
+}
+
+.SearchFood, .edit-meal > .info {
+  width: 49%;
+  height: 250px;
+  border-radius: 15px;
+  padding: 10px;
+  background-color: white;
+
+  .list {
+    width: 100%;
+  }
+}
+
+.edit-meal {
+  > .info {
+    margin-left: 1%;
+    height: auto;
+    text-align: center;
+
+    img {
+      width: 50%;
+      border-radius: 8px;
+    }
+
+    div {
+      font-size: 14px;
+
+      .name {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .nutrient {
+        margin-top: 10px;
+      }
+    }
+  }
+
+}
+
+.SearchFood {
+  margin-right: 1%;
+
+  .search-list {
+    font-size: 12px;
+
+    .food {
+      float: left;
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: 4px;
+
+      .info {
+        float: left;
+        width: 80%;
+      }
+
+      button {
+        float: right;
+        border: none;
+        border-radius: 8px;
+        background-color: black;
+
+        svg {
+          color: white;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.EditCheckList {
+  width: 100%;
+
+  > div {
+    float: left;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .content {
+    float: left;
+    width: 75%;
+    font-size: 12px;
+  }
+
+  .Button {
+    float: right;
+  }
+
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 12.5px;
+  }
+}
