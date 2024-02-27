@@ -1,0 +1,249 @@
+@import './utils';
+
+.UserInfoModal {
+  height: 250px;
+
+  > div:first-child {
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .EditHeightWeight {
+    margin-bottom: 20px;
+  }
+}
+
+.EditHeightWeight {
+  .MuiFormControl-root {
+    width: 25%;
+  }
+
+  .MuiFormControl-root, .default {
+    margin-right: 10px;
+  }
+
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 12.5px 14px;
+  }
+}
+
+.MuiFormControl-root {
+  background-color: white;
+}
+
+.MuiTypography-root {
+  font-size: 12px;
+}
+
+.EatingMealList {
+  display: flex;
+
+  .add-meal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid $bright-navy;
+    color: $bright-navy;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+.EatingMealItem {
+  width: 200px;
+  height: 130px;
+  padding: 4px;
+  margin-right: 10px;
+  border-radius: 8px;
+  background-color: black;
+  color: white;
+  font-family: $pretendard;
+  font-size: 12px;
+  overflow: hidden;
+
+  > div {
+    float: left;
+    position: relative;
+    width: 195px;
+    height: 125px;
+    padding: 2px;
+    border-radius: 8px;
+    background-size: cover;
+  }
+
+  .mealtime {
+    float: left;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+  }
+
+  .foodList {
+    width: 195px;
+    position: absolute;
+    bottom: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .food {
+    float: left;
+    width: 100%;
+
+    .kcal {
+      float: right;
+    }
+  }
+}
+
+.TodoModal {
+  height: 100%;
+
+  .css-1q04gal-MuiDateCalendar-root {
+    width: 30% !important;
+    margin: 0 !important;
+  }
+
+  nav {
+    margin-bottom: 20px;
+
+    ul {
+      display: flex;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      color: $deep-gray;
+      font-size: 14px;
+    }
+
+    .menu-active {
+      color: black;
+      font-weight: 600;
+    }
+  }
+
+  .Todo {
+    > div {
+      display: flex;
+    }
+  }
+
+  .MuiDateCalendar-root {
+    display: none;
+  }
+}
+
+.monthly {
+  display: flex;
+
+  .TodoList {
+    width: 70%;
+    padding-left: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .MuiDateCalendar-root {
+    display: block;
+  }
+}
+
+.TodoList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+
+  .addButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid $bright-navy;
+    color: $bright-navy;
+    font-size: 14px;
+    font-family: $pretendard;
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+
+    a {
+      margin: auto;
+    }
+  }
+
+  .addButton:hover {
+    cursor: pointer;
+  }
+}
+
+.TodoItem {
+  height: 200px;
+  border-radius: 8px;
+  background-color: white;
+  font-family: $pretendard;
+  overflow-x: auto;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.15);
+
+  .thumbnail {
+    height: 30px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    cursor: pointer;
+  }
+
+  .info {
+    padding: 10px;
+
+    .MuiFormControlLabel-root {
+      width: 100%;
+      cursor: default;
+    }
+
+    .MuiCheckbox-root {
+      padding: 0 4px 0 15px;
+    }
+
+    .MuiCheckbox-root:hover {
+      background: none;
+    }
+
+    .MuiTypography-root {
+      width: 200px;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .checklist {
+      margin-top: 10px;
+    }
+  }
+}
+
+.css-1vs7z2v-MuiYearCalendar-root {
+  width: 100% !important;
+}
+
+.css-1epin5m-MuiPickersYear-yearButton {
+  font-size: 12px !important;
+}
+
+.css-1hu62ex-MuiPickersCalendarHeader-labelContainer {
+  font-size: 14px !important;
+}
+
+.css-1l2in5n-MuiButtonBase-root-MuiPickersDay-root.Mui-selected, .css-1epin5m-MuiPickersYear-yearButton.Mui-selected {
+  background-color: $blue !important;
+}
