@@ -1,3 +1,5 @@
+import React from "react";
+
 const EatingMealItem = () => {
     const img_url = process.env.PUBLIC_URL + 'assets/food.jpg';
     return (

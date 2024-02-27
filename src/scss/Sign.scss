@@ -1,0 +1,83 @@
+@import './utils';
+
+.SignUp, .SignIn, .SignOut, .UserInfo {
+  width: 50%;
+  height: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    text-align: center;
+    cursor: default;
+  }
+
+  .positive {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .link {
+    color: $gray;
+    font-size: 12px;
+    text-decoration: underline;
+  }
+}
+
+.SignUp, .UserInfo {
+  .MuiGrid-root {
+    > .Button {
+      float: right;
+      padding: 18px 20px;
+    }
+  }
+}
+
+.profile-img {
+  position: relative;
+
+  button {
+    border: none;
+    border-radius: 8px;
+    background-color: $deep-gray;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.UserInfo {
+  .profile-img img {
+    width: 120px;
+  }
+}
+
+.SignUp {
+  .profile-img {
+    width: 56px;
+  }
+
+  .profile-img img {
+    width: 56px;
+  }
+}
+
+.css-1vs7z2v-MuiYearCalendar-root {
+  width: 100% !important;
+}
+
+.css-1epin5m-MuiPickersYear-yearButton {
+  font-size: 12px !important;
+}
+
+.css-1hu62ex-MuiPickersCalendarHeader-labelContainer {
+  font-size: 14px !important;
+}
+
+.css-1l2in5n-MuiButtonBase-root-MuiPickersDay-root.Mui-selected, .css-1epin5m-MuiPickersYear-yearButton.Mui-selected {
+  background-color: $blue !important;
+}

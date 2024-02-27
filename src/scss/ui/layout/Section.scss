@@ -6,15 +6,13 @@ section {
 }
 
 .LeftSection {
-  //display: flex;
-  //flex-direction: column;
-  //flex: 1;
+  min-height: 842px;
   flex: 1;
   display: flex;
   flex-direction: column;
   height: calc(100% - 20px); /* 부모 컨테이너에서 20px만큼 뺀 높이 */
 
-  > div {
+  > div, > article {
     padding: 20px;
     border-radius: 15px;
     background-color: $bright-gray;

@@ -50,14 +50,28 @@ header {
     svg {
       color: $deep-gray;
       font-size: 30px;
-      margin-right: 20px;
+      margin-right: 13px;
       cursor: pointer;
     }
 
     img {
       width: 30px;
-      margin-right: 5px;
       cursor: pointer;
+    }
+
+    .signup, .signin, .signout {
+      font-size: 14px;
+      font-weight: 600;
+      color: $deep-gray;
+    }
+
+    .signup, .signin {
+      display: none;
+      margin-left: 10px;
+    }
+
+    .signout {
+      margin-right: 20px;
     }
   }
 }

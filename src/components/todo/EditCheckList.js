@@ -18,7 +18,6 @@ const EditCheckList = ({checklist}) => {
     };
 
     const handleEditButtonClick = () => {
-        // 편집 버튼 클릭 시 수행할 작업을 여기에 추가합니다.
         console.log("Edit button clicked");
     };
 

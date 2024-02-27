@@ -5,7 +5,12 @@ import Home from "./pages/home/Home";
 import Information from "./pages/Information";
 import {createTheme, ThemeProvider} from "@mui/material";
 import Header from "./components/Header";
-import EditRecord from "./pages/record/EditRecord";
+import SignIn from "./pages/sign/SignIn";
+import SignUp from "./pages/sign/SignUp";
+import Record from "./pages/record/Record";
+import Todo from "./pages/todo/Todo";
+import UserInfo from "./pages/UserInfo";
+import EditTodo from "./pages/todo/EditTodo";
 
 const theme = createTheme({
     typography: {
@@ -22,7 +27,12 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Information/>}/>
                         <Route path="/home" element={<Home/>}/>
-                        <Route path="/record" element={<EditRecord/>}/>
+                        <Route path="/edit" element={<EditTodo/>}/>
+                        <Route path="/todo" element={<Todo/>}/>
+                        <Route path="/record" element={<Record/>}/>
+                        <Route path="/signin" element={<SignIn/>}/>
+                        <Route path="/signup" element={<SignUp/>}/>
+                        <Route path="/myaccount" element={<UserInfo/>}/>
                     </Routes>
                 </div>
             </BrowserRouter>

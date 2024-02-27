@@ -1,21 +1,15 @@
-import TodoModal from "../../components/todo/TodoModal";
-import RecommendModal from "../../components/recommend/RecommendModal";
-import React from "react";
-import UserInfoModal from "../../components/user/UserInfoModal";
 import LeftSection from "../../components/ui/layout/LeftSection";
 import RightSection from "../../components/ui/layout/RightSection";
-
-import '../../scss/ui/layout/Section.scss';
-import '../../scss/Todo.scss';
-import '../../scss/Recommend.scss';
+import RecommendModal from "../../components/recommend/RecommendModal";
+import React from "react";
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import TodoModal from "../../components/todo/TodoModal";
 
-const Home = () => {
+const Todo = () => {
     return (
         <>
             <LeftSection>
-                <UserInfoModal/>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TodoModal/>
                 </LocalizationProvider>
@@ -23,8 +17,7 @@ const Home = () => {
             <RightSection>
                 <RecommendModal/>
             </RightSection>
-        </>
-    );
+        </>);
 };
 
-export default Home;
+export default Todo;

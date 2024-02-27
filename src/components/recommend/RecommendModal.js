@@ -1,5 +1,6 @@
 import React from "react";
 import FoodList from "./FoodList";
+import Button from "../ui/Button";
 
 const RecommendModal = () => {
     return (
@@ -20,6 +21,7 @@ const RecommendModal = () => {
             </div>
             <h6 className="recommend-title">이런 음식을 먹어보세요</h6>
             <FoodList/>
+            <Button text={"Today's Meal Record"} type={"positive"}/>
         </div>
     );
 };

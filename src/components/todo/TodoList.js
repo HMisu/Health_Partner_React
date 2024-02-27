@@ -1,5 +1,5 @@
 import React, {useEffect, useReducer, useState} from "react";
-import RecordItem from "./RecordItem";
+import RecordItem from "./TodoItem";
 import dayjs from "dayjs";
 import {randomBrightColor} from "../../util/randomBrightColor";
 
@@ -64,7 +64,7 @@ const dummyData = [
     },
 ];
 
-const RecordList = ({children, activeTab}) => {
+const TodoList = ({children, activeTab}) => {
     const [data, dispatch] = useReducer(reducer, dummyData);
 
     const changeThumbnailColors = () => {
@@ -83,7 +83,7 @@ const RecordList = ({children, activeTab}) => {
     return (
         <div className={activeTab === 1 ? "monthly" : ""}>
             {children}
-            <div className={["RecordList"].join(" ")}>
+            <div className={["TodoList"].join(" ")}>
                 {data.map((item) => (
                     <RecordItem
                         key={item.id}
@@ -99,8 +99,8 @@ const RecordList = ({children, activeTab}) => {
     );
 };
 
-RecordList.defaultProps = {
+TodoList.defaultProps = {
     diaryList: [],
 };
 
-export default RecordList;
+export default React.memo(TodoList);

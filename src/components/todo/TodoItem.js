@@ -1,9 +1,9 @@
 import React from "react";
 import CheckList from "./CheckList";
 
-const RecordItem = ({id, title, diary, checklist, meal, date, color}) => {
+const TodoItem = ({id, title, diary, checklist, meal, date, color}) => {
     return (
-        <article className="RecordItem">
+        <article className="TodoItem">
             <div className="thumbnail" style={{backgroundColor: color}}></div>
             <div className="info">
                 <h6>
@@ -17,4 +17,4 @@ const RecordItem = ({id, title, diary, checklist, meal, date, color}) => {
     );
 };
 
-export default React.memo(RecordItem);
+export default TodoItem;
