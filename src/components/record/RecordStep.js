@@ -4,10 +4,10 @@ import {TextField} from "@mui/material";
 import React, {useCallback} from "react";
 import {handleNumInputChange} from "../../util/handleNumInputChange";
 import dayjs from "dayjs";
-import UserPedometerList from "./UserPedometerList";
+import UserStepList from "./UserStepList";
 
 
-const RecordPedometer = () => {
+const RecordStep = () => {
     const lastDayOfMonth = dayjs().endOf('month').date();
 
     const percentage = 66;
@@ -18,7 +18,7 @@ const RecordPedometer = () => {
     }, []);
 
     return (
-        <article className="RecordPedometer">
+        <article className="RecordStep">
             <div className="left-container">
                 <CircularProgressbar counterClockwise value={percentage} text={`${percentage}%`}
                                      styles={buildStyles({
@@ -46,10 +46,10 @@ const RecordPedometer = () => {
                         47kcal 소모
                     </div>
                 </div>
-                <UserPedometerList data={dummyData}/>
+                <UserStepList data={dummyData}/>
             </div>
         </article>
     );
 };
 
-export default RecordPedometer;
+export default RecordStep;

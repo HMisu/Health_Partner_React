@@ -11,6 +11,10 @@ import Record from "./pages/record/Record";
 import Todo from "./pages/todo/Todo";
 import UserInfo from "./pages/UserInfo";
 import EditTodo from "./pages/todo/EditTodo";
+import {Provider} from "react-redux";
+import store from './store/configureStore';
+import {persistStore} from "redux-persist";
+import {PersistGate} from "redux-persist/integration/react";
 
 const theme = createTheme({
     typography: {
@@ -18,25 +22,31 @@ const theme = createTheme({
     }
 });
 
+export let persiststore = persistStore(store);
+
 function App() {
     return (
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Header/>
-                <div className="App">
-                    <Routes>
-                        <Route path="/" element={<Information/>}/>
-                        <Route path="/home" element={<Home/>}/>
-                        <Route path="/edit" element={<EditTodo/>}/>
-                        <Route path="/todo" element={<Todo/>}/>
-                        <Route path="/record" element={<Record/>}/>
-                        <Route path="/signin" element={<SignIn/>}/>
-                        <Route path="/signup" element={<SignUp/>}/>
-                        <Route path="/myaccount" element={<UserInfo/>}/>
-                    </Routes>
-                </div>
-            </BrowserRouter>
-        </ThemeProvider>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persiststore}>
+                <ThemeProvider theme={theme}>
+                    <BrowserRouter>
+                        <Header/>
+                        <div className="App">
+                            <Routes>
+                                <Route path="/" element={<Information/>}/>
+                                <Route path="/home" element={<Home/>}/>
+                                <Route path="/edit" element={<EditTodo/>}/>
+                                <Route path="/todo" element={<Todo/>}/>
+                                <Route path="/record" element={<Record/>}/>
+                                <Route path="/signin" element={<SignIn/>}/>
+                                <Route path="/signup" element={<SignUp/>}/>
+                                <Route path="/myaccount" element={<UserInfo/>}/>
+                            </Routes>
+                        </div>
+                    </BrowserRouter>
+                </ThemeProvider>
+            </PersistGate>
+        </Provider>
     );
 }
 

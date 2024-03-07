@@ -4,13 +4,7 @@ import {getStringDate} from "../../util/date";
 import React from "react";
 
 const mealList = ["breakfast", "lunch", "snack"];
-
-const ApexChart = () => {
-
-};
-
 const UserInfoModal = () => {
-
     return (
         <div className="UserInfoModal">
             <div>

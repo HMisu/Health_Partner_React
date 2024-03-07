@@ -7,8 +7,17 @@ import React from "react";
 
 import '../scss/Header.scss';
 import Menu from "./ui/Menu";
+import {useSelector} from "react-redux";
+import {useLocation} from "react-router-dom";
 
 const Header = () => {
+    const isSignIn = useSelector(state => state.member.isSignIn);
+    const member = useSelector(state => state.member.member);
+
+    const location = useLocation();
+
+    console.log(isSignIn + ": isSignIn");
+    console.log(member + " member");
     return (
         <header>
             <div className="logo">
@@ -26,19 +35,36 @@ const Header = () => {
                 </ul>
             </nav>
             <div className="user-container">
-                <a href="/signin" className="signin">
-                    Sign In
-                </a>
-                <a href="/signup" className="signup">
-                    Sign Up
-                </a>
-                <a href="/signup" className="signout">
-                    Sign Out
-                </a>
-                <SvgIcon component={NotificationsNoneIcon}></SvgIcon>
-                <a href="/myaccount">
-                    <img src={process.env.PUBLIC_URL + `assets/ico_user_default.png`} alt="user_profile_img"/>
-                </a>
+                {location.pathname === '/' && !isSignIn && (
+                    <div>
+                        <a href="/signin" className="signin">
+                            Sign In
+                        </a>
+                        <a href="/signup" className="signup">
+                            Sign Up
+                        </a>
+                    </div>
+                )}
+
+                {location.pathname === '/' && (
+                    <a className="github">
+                        <img src={process.env.PUBLIC_URL + `assets/github-mark.png`} alt="github_logo"/>
+                    </a>
+                )}
+
+                {location.pathname !== '/' && isSignIn && (
+                    <>
+                        <a href="/signout" className="signout">
+                            Sign Out
+                        </a>
+                        <a className="notify">
+                            <SvgIcon component={NotificationsNoneIcon}></SvgIcon>
+                        </a>
+                        <a href="/myaccount" className="myaccount">
+                            <img src={process.env.PUBLIC_URL + `assets/ico_user_default.png`} alt="user_profile_img"/>
+                        </a>
+                    </>
+                )}
             </div>
         </header>
     );

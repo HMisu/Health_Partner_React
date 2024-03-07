@@ -63,15 +63,11 @@ header {
       font-size: 14px;
       font-weight: 600;
       color: $deep-gray;
-    }
-
-    .signup, .signin {
-      display: none;
       margin-left: 10px;
     }
 
-    .signout {
-      margin-right: 20px;
+    .notify, .github {
+      margin-left: 20px;
     }
   }
 }
