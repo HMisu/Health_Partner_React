@@ -1,7 +1,7 @@
 @import './utils';
 
 .SignUp, .SignIn, .SignOut, .UserInfo {
-  width: 50%;
+  width: 45%;
   height: 700px;
   margin: 0 auto;
   display: flex;
@@ -16,7 +16,6 @@
 
   .positive {
     width: 100%;
-    margin-top: 20px;
     margin-bottom: 20px;
   }
 
@@ -80,4 +79,17 @@
 
 .css-1l2in5n-MuiButtonBase-root-MuiPickersDay-root.Mui-selected, .css-1epin5m-MuiPickersYear-yearButton.Mui-selected {
   background-color: $blue !important;
+}
+
+.MuiGrid-item {
+  text-align: center;
+}
+
+.MuiGrid-container {
+  margin-bottom: 40px;
+}
+
+.social-signin {
+  width: 230px;
+  height: 50px;
 }

@@ -1,6 +1,6 @@
-const UserPedometerList = ({data}) => {
+const UserStepList = ({data}) => {
     return (
-        <article className="UserPedometerList">
+        <article className="UserStepList">
             <ul>
                 {data.map((item, idx) => (
                     <li key={idx}>{idx}일 <span>{item}보</span></li>
@@ -10,4 +10,4 @@ const UserPedometerList = ({data}) => {
     );
 };
 
-export default UserPedometerList;
+export default UserStepList;

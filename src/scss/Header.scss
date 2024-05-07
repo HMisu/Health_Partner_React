@@ -43,7 +43,7 @@ header {
     }
   }
 
-  .user-container {
+  .a-container {
     width: 25%;
     justify-content: end;
 
@@ -65,13 +65,8 @@ header {
       color: $deep-gray;
     }
 
-    .signup, .signin {
-      display: none;
+    a {
       margin-left: 10px;
-    }
-
-    .signout {
-      margin-right: 20px;
     }
   }
 }

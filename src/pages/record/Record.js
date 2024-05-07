@@ -5,7 +5,7 @@ import RightSection from "../../components/ui/layout/RightSection";
 import React from "react";
 import RecordModal from "../../components/record/RecordModal";
 import RecordWater from "../../components/record/RecordWater";
-import RecordPedometer from "../../components/record/RecordPedometer";
+import RecordStep from "../../components/record/RecordStep";
 
 const Record = () => {
     return (
@@ -13,7 +13,7 @@ const Record = () => {
             <LeftSection>
                 <RecordModal/>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <RecordPedometer/>
+                    <RecordStep/>
                 </LocalizationProvider>
             </LeftSection>
             <RightSection>
