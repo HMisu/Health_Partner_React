@@ -52,7 +52,7 @@ const SignIn = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            name='password' variant='outlined' fullWidth required
+                            type="password" name='password' variant='outlined' fullWidth required
                             id='password' label='Password' value={form.password}
                             onChange={textFiledchanged}/>
                     </Grid>

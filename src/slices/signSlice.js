@@ -33,6 +33,26 @@ export const signin = createAsyncThunk(
     }
 );
 
+export const signout = createAsyncThunk(
+    'member/signout',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:9090/member/signout`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
 const signSlice = createSlice({
     name: 'member',
     initialState: {
@@ -70,6 +90,15 @@ const signSlice = createSlice({
             }
 
             return state;
+        });
+        builder.addCase(signout.fulfilled, (state, action) => {
+            alert("로그아웃 성공.");
+            sessionStorage.removeItem("ACCESS_TOKEN");
+
+            return {
+                ...state,
+                isLogin: false
+            }
         });
     }
 });

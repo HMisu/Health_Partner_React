@@ -64,12 +64,12 @@ const Information = () => {
                     indicatorIconButtonProps={{
                         style: {
                             fontSize: '20px',
-                            color: '#C4C4C4'       // 3
+                            color: '#C4C4C4'
                         }
                     }}
                     activeIndicatorIconButtonProps={{
                         style: {
-                            color: '#7287FB' // 2
+                            color: '#7287FB'
                         }
                     }}
                     indicatorContainerProps={{

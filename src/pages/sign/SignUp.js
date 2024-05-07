@@ -165,7 +165,7 @@ const SignUp = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            name='password' variant='outlined' fullWidth required
+                            type="password" name='password' variant='outlined' fullWidth required
                             id='password' label='Password' value={form.password}
                             onChange={textFieldChanged} onBlur={passwordBlur}/>
                         <Typography
@@ -179,7 +179,7 @@ const SignUp = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            name='passwordChk'
+                            type="password" name='passwordChk'
                             variant='outlined'
                             required
                             id='passwordChk'

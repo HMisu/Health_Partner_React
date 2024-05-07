@@ -43,7 +43,7 @@ header {
     }
   }
 
-  .user-container {
+  .a-container {
     width: 25%;
     justify-content: end;
 
@@ -63,11 +63,10 @@ header {
       font-size: 14px;
       font-weight: 600;
       color: $deep-gray;
-      margin-left: 10px;
     }
 
-    .notify, .github {
-      margin-left: 20px;
+    a {
+      margin-left: 10px;
     }
   }
 }
