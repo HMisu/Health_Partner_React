@@ -13,32 +13,28 @@ import {signout} from "../slices/signSlice";
 
 const Header = () => {
     const isSignIn = useSelector(state => state.member.isSignIn);
-    const member = useSelector(state => state.member.member);
 
     const location = useLocation();
     const navi = useNavigate();
 
     const dispatch = useDispatch();
     const handleLogout = useCallback(() => {
-        console.log(">>>logout");
         dispatch(signout());
         navi("/signin");
-    }, [dispatch, navi]);
+    }, [dispatch]);
 
-    console.log(isSignIn + ": isSignIn");
-    console.log(member + " member");
     return (
         <header>
             <div className="logo">
                 <img src={process.env.PUBLIC_URL + `/logo.png`} alt="logo"/>
-                <a href="/home">
+                <a href="/dashboard">
                     <span>HealthPartner</span>
                 </a>
 
             </div>
             <nav>
                 <ul>
-                    <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/home"}/>
+                    <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/dashboard"}/>
                     <Menu text={<SvgIcon component={EventNoteOutlinedIcon}/>} href={"/todo"}/>
                     <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/record"}/>
                 </ul>
