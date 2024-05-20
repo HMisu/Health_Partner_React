@@ -1,10 +1,12 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import '../../scss/Sign.scss';
 import {Grid, TextField} from "@mui/material";
 import Button from "../../components/ui/Button";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {signin} from "../../slices/signSlice";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useNavigationType} from "react-router-dom";
+import GoogleLoginBtn from "../../components/api/GoogleLoginBtn";
+import KakaoLoginBtn from "../../components/api/KakaoLoginBtn";
 
 const SignIn = () => {
     const [form, setForm] = useState({
@@ -13,16 +15,17 @@ const SignIn = () => {
     });
 
     const navi = useNavigate();
+    const naviType = useNavigationType();
 
-    const isSignIn = useSelector(state => state.member.isSignIn);
+    // const isSignIn = useSelector(state => state.member.isSignIn);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (isSignIn) {
-            navi("/");
-        }
-    }, [isSignIn]);
+    // useEffect(() => {
+    //     if (isSignIn) {
+    //         navi("/");
+    //     }
+    // }, [isSignIn]);
 
     const textFiledchanged = useCallback((e) => {
         setForm({
@@ -35,8 +38,11 @@ const SignIn = () => {
         e.preventDefault();
 
         dispatch(signin(form));
-    }, [form, dispatch]);
 
+        if (naviType === "PUSH") navi(-1);
+        else navi("/");
+    }, [form, dispatch]);
+    
     return (
         <div className="SignIn">
             <form onSubmit={handleLogin}>
@@ -60,12 +66,10 @@ const SignIn = () => {
                         <Button text={"Sign In"} type={"positive"} submit={true}/>
                     </Grid>
                     <Grid item xs={6}>
-                        <img src={process.env.PUBLIC_URL + `assets/google_signin_img.png`} alt="google_signin_img"
-                             className="social-signin"/>
+                        <GoogleLoginBtn/>
                     </Grid>
                     <Grid item xs={6}>
-                        <img src={process.env.PUBLIC_URL + `assets/kakao_signin_img.png`} alt="kakao_signin_img"
-                             className="social-signin"/>
+                        <KakaoLoginBtn/>
                     </Grid>
                 </Grid>
                 <Grid container justifyContent="flex-end">

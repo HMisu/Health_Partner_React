@@ -15,6 +15,7 @@ import {Provider} from "react-redux";
 import store from './store/configureStore';
 import {persistStore} from "redux-persist";
 import {PersistGate} from "redux-persist/integration/react";
+import KakaoOAuth2RedirectPage from "./components/api/KakaoOAuth2RedirectPage";
 
 const theme = createTheme({
     typography: {
@@ -34,13 +35,14 @@ function App() {
                         <div className="App">
                             <Routes>
                                 <Route path="/" element={<Information/>}/>
-                                <Route path="/home" element={<Home/>}/>
+                                <Route path="/dashboard" element={<Home/>}/>
                                 <Route path="/edit" element={<EditTodo/>}/>
                                 <Route path="/todo" element={<Todo/>}/>
                                 <Route path="/record" element={<Record/>}/>
                                 <Route path="/signin" element={<SignIn/>}/>
                                 <Route path="/signup" element={<SignUp/>}/>
                                 <Route path="/myaccount" element={<UserInfo/>}/>
+                                <Route path="/oauth/redirected/kakao" element={<KakaoOAuth2RedirectPage/>}/>
                             </Routes>
                         </div>
                     </BrowserRouter>
