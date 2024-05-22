@@ -72,6 +72,22 @@ export const signout = createAsyncThunk(
     }
 );
 
+export const sendEmail = createAsyncThunk(
+    'member/sendEmail',
+    async (email, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:9090/member/email`,
+                email
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
 const signSlice = createSlice({
     name: 'member',
     initialState: {
@@ -84,7 +100,7 @@ const signSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signup.fulfilled, (state, action) => {
             alert(`${action.payload.name}님 회원가입을 축하합니다.`);
-            window.location.href = '/singin';
+            window.location.href = '/dashboard';
 
             return state;
         });

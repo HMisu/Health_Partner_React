@@ -1,5 +1,5 @@
 import {Grid, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import '../../scss/Sign.scss';
 import axios from "axios";
 import Button from "../../components/ui/Button";
@@ -10,6 +10,7 @@ import {signup} from "../../slices/signSlice";
 const SignUp = () => {
     const [form, setForm] = useState({
         email: '',
+        verifyCode: '',
         password: '',
         passwordChk: '',
         name: '',
@@ -27,51 +28,25 @@ const SignUp = () => {
         handleNumInputChange(event);
     }, []);
 
+    useEffect(() => {
+        console.log("emailChk : " + emailChk);
+    }, [emailChk]);
+
     const textFieldChanged = useCallback((e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
         });
-        console.log("changed: " + form.email);
 
-        if (e.target.name === 'email') {
-            setEmailChk(false);
-            document.querySelector("#emailChk").removeAttribute('disabled');
-            return;
-        }
-
-        if (e.target.name === 'password') {
-            if (e.target.value === form.passwordChk) {
-                setPwChk(true);
-                document.querySelector("#password-check-success").style.display = 'block';
-                document.querySelector("#password-check-fail").style.display = 'none';
-            } else {
-                setPwChk(false);
-                document.querySelector("#password-check-success").style.display = 'none';
-                document.querySelector("#password-check-fail").style.display = 'block';
-            }
-
-            return;
-        }
-
-        if (e.target.name === 'passwordChk') {
-            if (e.target.value === form.password) {
-                setPwChk(true);
-                document.querySelector("#password-check-success").style.display = 'block';
-                document.querySelector("#password-check-fail").style.display = 'none';
-            } else {
-                setPwChk(false);
-                document.querySelector("#password-check-success").style.display = 'none';
-                document.querySelector("#password-check-fail").style.display = 'block';
-            }
-
-            return;
+        if (e.target.name === 'password' || e.target.name === 'passwordChk') {
+            const isMatch = e.target.value === form.passwordChk || e.target.value === form.password;
+            setPwChk(isMatch);
+            document.querySelector("#password-check-success").style.display = isMatch ? 'block' : 'none';
+            document.querySelector("#password-check-fail").style.display = isMatch ? 'none' : 'block';
         }
     }, [form]);
 
-    const emailCheck = useCallback(async () => {
-        console.log(form.email);
-
+    const sendEmail = useCallback(async () => {
         if (form.email === '') {
             alert("이메일을 입력하세요.");
             document.querySelector("#email").focus();
@@ -79,23 +54,13 @@ const SignUp = () => {
         }
 
         try {
-            const response = await axios.post(
-                `http://localhost:9090/member/email-check`,
-                {
-                    email: form.email
-                }
-            );
-
-            if (response.data.item.EmailCheckResult === 'invalid email') {
+            const response = await axios.post(`http://localhost:9090/member/email`, {email: form.email});
+            if (response.data.item.emailCheckResult === 'invalid email') {
                 alert("중복된 이메일입니다. 다른 이메일로 변경해주세요.");
                 document.querySelector("#email").focus();
-                return;
             } else {
-                if (window.confirm(`${form.email}는 사용가능한 이메일입니다. 사용하시겠습니까?`)) {
-                    document.querySelector("#emailChk").setAttribute('disabled', true);
-                    setEmailChk(true);
-                    return;
-                }
+                alert("인증 메일이 발송되었습니다. 인증 코드를 입력해주세요.");
+                document.querySelectorAll(".verify-email").forEach(element => element.style.display = 'block');
             }
         } catch (e) {
             console.log(e);
@@ -103,10 +68,35 @@ const SignUp = () => {
         }
     }, [form.email]);
 
+    const verifyEmail = useCallback(async () => {
+        if (form.verifyCode === '') {
+            alert("인증코드를 입력하세요.");
+            document.querySelector("#verifyCode").focus();
+            return;
+        }
+
+        try {
+            await axios.get(
+                `http://localhost:9090/member/email/verify`,
+                {
+                    email: form.email,
+                    verifyCode: form.verifyCode
+                }
+            );
+            setEmailChk(true);
+
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.errorCode === 102) {
+                alert("이메일 인증 코드가 일치하지 않습니다. 다시 시도하세요.");
+            } else {
+                alert("에러 발생. 관리자에게 문의하세요.");
+            }
+        }
+    }, [form.email, form.verifyCode]);
+
     const validatePassword = (password) => {
         return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(password);
     };
-
     const passwordBlur = useCallback((e) => {
         if (validatePassword(form.password)) {
             setPwValidation(true);
@@ -128,7 +118,7 @@ const SignUp = () => {
         e.preventDefault();
 
         if (!emailChk) {
-            alert("아이디 중복체크를 진행하세요.");
+            alert("이메일 인증을 진행하세요.");
             return;
         }
 
@@ -158,15 +148,29 @@ const SignUp = () => {
                         <TextField
                             name='email' variant='outlined' fullWidth required
                             id='email' label='Email' value={form.email} autoFocus
-                            onChange={textFieldChanged}/>
+                            onChange={textFieldChanged} disabled={emailChk}/>
                     </Grid>
                     <Grid item xs={2}>
-                        <Button text={"Verify"} id={"emailChk"} color='primary' onClick={emailCheck}/>
+                        <Button text={"Check"} id={"send-email-btn"} color='primary' onClick={sendEmail}/>
+                    </Grid>
+                    <Grid item xs={10} className="verify-email">
+                        <TextField
+                            name='verifyCode' variant='outlined' fullWidth
+                            id='verifyCode' label='VerifyCode' value={form.verifyCode}
+                            onChange={textFieldChanged} disabled={emailChk}/>
+                    </Grid>
+                    <Grid item xs={2} className="verify-email">
+                        <Button text={"Verify"} id={"verify-email-btn"} color='primary' onClick={verifyEmail}/>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            type="password" name='password' variant='outlined' fullWidth required
-                            id='password' label='Password' value={form.password}
+                            type="password"
+                            name='password'
+                            variant='outlined'
+                            fullWidth required
+                            id='password'
+                            label='Password'
+                            value={form.password}
                             onChange={textFieldChanged} onBlur={passwordBlur}/>
                         <Typography
                             name='password-validation'
@@ -185,7 +189,6 @@ const SignUp = () => {
                             id='passwordChk'
                             label='비밀번호 확인'
                             fullWidth
-                            type='password'
                             value={form.passwordChk}
                             onChange={textFieldChanged}/>
                         <Typography
