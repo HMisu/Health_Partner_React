@@ -1,7 +1,6 @@
 import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {SvgIcon} from "@mui/material";
 import React, {useCallback} from "react";
 
@@ -9,15 +8,17 @@ import '../scss/Header.scss';
 import Menu from "./ui/Menu";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {signout} from "../slices/signSlice";
+import {signout} from "../slices/memberSlice";
 
 const Header = () => {
-    const isSignIn = useSelector(state => state.member.isSignIn);
-
     const location = useLocation();
     const navi = useNavigate();
 
     const dispatch = useDispatch();
+
+    const isSignIn = useSelector(state => state.member.isSignIn);
+    const loginMemberImage = useSelector(state => state.member.loginMemberImage);
+
     const handleLogout = useCallback(() => {
         dispatch(signout());
         navi("/signin");
@@ -30,7 +31,6 @@ const Header = () => {
                 <a href="/dashboard">
                     <span>HealthPartner</span>
                 </a>
-
             </div>
             <nav>
                 <ul>
@@ -40,7 +40,7 @@ const Header = () => {
                 </ul>
             </nav>
             <div className="a-container">
-                {location.pathname === '/' && !isSignIn && (
+                {!isSignIn && (
                     <>
                         <a href="/signin" className="signin">
                             Sign In
@@ -56,21 +56,23 @@ const Header = () => {
                         <a className="signout" onClick={handleLogout}>
                             Sign Out
                         </a>
-                        <a href="/myaccount" className="myaccount">
-                            <img src={process.env.PUBLIC_URL + `assets/ico_user_default.png`} alt="user_profile_img"/>
-                        </a>
+                        {loginMemberImage !== null && loginMemberImage !== '' ? (
+                            <a href="/account/profile" className="myaccount">
+                                <img src={loginMemberImage}
+                                     alt="member_profile_img"/>
+                            </a>
+                        ) : (
+                            <a href="/account/profile" className="myaccount">
+                                <img src={process.env.PUBLIC_URL + `/assets/ico_member_default.png`}
+                                     alt="member_profile_img"/>
+                            </a>
+                        )}
                     </>
                 )}
 
                 {location.pathname === '/' && (
-                    <a className="github">
-                        <img src={process.env.PUBLIC_URL + `assets/github-mark.png`} alt="github_logo"/>
-                    </a>
-                )}
-
-                {location.pathname !== '/' && isSignIn && (
-                    <a className="notify">
-                        <SvgIcon component={NotificationsNoneIcon}></SvgIcon>
+                    <a className="github" href="https://github.com/HMisu/Health_Partner">
+                        <img src={process.env.PUBLIC_URL + `/assets/github-mark.png`} alt="github_logo"/>
                     </a>
                 )}
             </div>

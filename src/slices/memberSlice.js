@@ -1,12 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_URL = "http://localhost:9090";
+
 export const signup = createAsyncThunk(
     'member/signup',
     async (member, thunkAPI) => {
         try {
             const response = await axios.post(
-                `http://localhost:9090/member/signup`,
+                `${API_URL}/member/signup`,
                 member
             );
 
@@ -22,7 +24,7 @@ export const signin = createAsyncThunk(
     async (member, thunkAPI) => {
         try {
             const response = await axios.post(
-                `http://localhost:9090/member/signin`,
+                `${API_URL}/member/signin`,
                 member
             );
 
@@ -33,12 +35,12 @@ export const signin = createAsyncThunk(
     }
 );
 
-export const kakaoSignin = createAsyncThunk(
-    'member/kakaoSignin',
+export const oauth2Signin = createAsyncThunk(
+    'member/oauth2Signin',
     async (token, thunkAPI) => {
         try {
             const response = await axios.get(
-                `http://localhost:9090/member/kakao`, {
+                `${API_URL}/member/signin/oauth`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -57,7 +59,7 @@ export const signout = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const response = await axios.get(
-                `http://localhost:9090/member/signout`,
+                `${API_URL}/member/signout`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -72,13 +74,17 @@ export const signout = createAsyncThunk(
     }
 );
 
-export const sendEmail = createAsyncThunk(
-    'member/sendEmail',
-    async (email, thunkAPI) => {
+export const getMemberProfile = createAsyncThunk(
+    'member/getMemberProfile',
+    async (_, thunkAPI) => {
         try {
             const response = await axios.get(
-                `http://localhost:9090/member/email`,
-                email
+                `${API_URL}/member/profile`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                    }
+                }
             );
 
             return response.data.item;
@@ -88,7 +94,74 @@ export const sendEmail = createAsyncThunk(
     }
 );
 
-const signSlice = createSlice({
+export const modifyPassword = createAsyncThunk(
+    'member/modifyPassword',
+    async (member, thunkAPI) => {
+        try {
+            const response = await axios.put(
+                `${API_URL}/member/pw/modify`,
+                member,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const modifyProfile = createAsyncThunk(
+    'member/modifyProfile',
+    async (member, thunkAPI) => {
+        try {
+            const response = await axios.put(
+                `${API_URL}/member/profile/modify`,
+                member,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const modifyProfileImg = createAsyncThunk(
+    'member/modifyProfileImg',
+    async (file, thunkAPI) => {
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await axios.put(
+                `${API_URL}/member/img/modify`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+const memberSlice = createSlice({
     name: 'member',
     initialState: {
         isSignIn: false,
@@ -100,13 +173,14 @@ const signSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signup.fulfilled, (state, action) => {
             alert(`${action.payload.name}님 회원가입을 축하합니다.`);
-            window.location.href = '/dashboard';
+            window.location.href = '/signin';
 
             return state;
         });
         builder.addCase(signup.rejected, (state, action) => {
-            alert("에러 발생. 관리자에게 문의하세요.")
+            alert("에러 발생. 관리자에게 문의하세요.");
             console.log(action.payload);
+
             return state;
         });
         builder.addCase(signin.fulfilled, (state, action) => {
@@ -131,7 +205,7 @@ const signSlice = createSlice({
             if (action.payload === 200) {
                 alert("존재하지 않는 아이디입니다.");
             } else if (action.payload === 201) {
-                alert("비밀번호가 잘못됐습니다.");
+                alert("비밀번호가 일치하지 않습니다.");
             } else if (action.payload === 202) {
                 sessionStorage.removeItem("ACCESS_TOKEN");
                 alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
@@ -142,7 +216,7 @@ const signSlice = createSlice({
 
             return state;
         });
-        builder.addCase(kakaoSignin.fulfilled, (state, action) => {
+        builder.addCase(oauth2Signin.fulfilled, (state, action) => {
             sessionStorage.setItem("ACCESS_TOKEN", action.payload.token);
 
             return {
@@ -153,7 +227,7 @@ const signSlice = createSlice({
                 loginMemberImage: action.payload.imgAddress
             };
         });
-        builder.addCase(kakaoSignin.rejected, (state, action) => {
+        builder.addCase(oauth2Signin.rejected, (state, action) => {
             if (action.payload === 200) {
                 alert("존재하지 않는 아이디입니다.");
             } else if (action.payload === 202) {
@@ -177,7 +251,41 @@ const signSlice = createSlice({
                 loginMemberImage: ""
             }
         });
+        builder.addCase(modifyPassword.fulfilled, (state, action) => {
+            alert('비밀번호 변경에 성공했습니다.');
+            window.location.href = '/account/profile';
+
+            return state;
+        });
+        builder.addCase(modifyPassword.rejected, (state, action) => {
+            alert('비밀번호 수정에 실패했습니다.');
+            console.log(action.payload);
+
+            return state;
+        });
+        builder.addCase(modifyProfile.fulfilled, (state, action) => {
+            window.location.reload();
+
+            return state;
+        });
+        builder.addCase(modifyProfile.rejected, (state, action) => {
+            alert('정보 수정에 실패했습니다.');
+            console.log(action.payload);
+
+            return state;
+        });
+        builder.addCase(modifyProfileImg.fulfilled, (state, action) => {
+            window.location.reload();
+
+            return state;
+        });
+        builder.addCase(modifyProfileImg.rejected, (state, action) => {
+            alert('이미지 업로드에 실패했습니다.');
+            console.log(action.payload);
+
+            return state;
+        });
     }
 });
 
-export default signSlice;
+export default memberSlice;

@@ -4,9 +4,9 @@ import {getStringDate} from "../../util/date";
 import React from "react";
 
 const mealList = ["breakfast", "lunch", "snack"];
-const UserInfoModal = () => {
+const MemberProfileModal = () => {
     return (
-        <div className="UserInfoModal">
+        <div className="MemberProfileModal">
             <div>
                 <span className="date">Today : {getStringDate(new Date())}</span>
             </div>
@@ -21,4 +21,4 @@ const UserInfoModal = () => {
     );
 };
 
-export default UserInfoModal;
+export default MemberProfileModal;
