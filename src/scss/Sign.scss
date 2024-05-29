@@ -1,6 +1,6 @@
 @import './utils';
 
-.SignUp, .SignIn, .SignOut, .UserInfo {
+.SignUp, .SignIn, .SignOut, .MemberProfile {
   width: 45%;
   height: 700px;
   margin: 0 auto;
@@ -26,7 +26,7 @@
   }
 }
 
-.SignUp, .UserInfo {
+.SignUp, .MemberProfile {
   .MuiGrid-root {
     > .Button {
       float: right;
@@ -49,9 +49,18 @@
   }
 }
 
-.UserInfo {
+.MemberProfile {
   .profile-img img {
     width: 120px;
+  }
+
+  .change-password {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    align-items: center;
+    font-weight: bold;
   }
 }
 

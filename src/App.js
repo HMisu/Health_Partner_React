@@ -9,13 +9,14 @@ import SignIn from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
 import Record from "./pages/record/Record";
 import Todo from "./pages/todo/Todo";
-import UserInfo from "./pages/UserInfo";
+import MemberProfile from "./pages/MemberProfile";
 import EditTodo from "./pages/todo/EditTodo";
 import {Provider} from "react-redux";
 import store from './store/configureStore';
 import {persistStore} from "redux-persist";
 import {PersistGate} from "redux-persist/integration/react";
-import KakaoOAuth2RedirectPage from "./components/api/KakaoOAuth2RedirectPage";
+import OAuth2RedirectPage from "./components/api/OAuth2RedirectPage";
+import ChangeMemberPassword from "./pages/ChangeMemberPassword";
 
 const theme = createTheme({
     typography: {
@@ -41,8 +42,9 @@ function App() {
                                 <Route path="/record" element={<Record/>}/>
                                 <Route path="/signin" element={<SignIn/>}/>
                                 <Route path="/signup" element={<SignUp/>}/>
-                                <Route path="/myaccount" element={<UserInfo/>}/>
-                                <Route path="/oauth/redirected/kakao" element={<KakaoOAuth2RedirectPage/>}/>
+                                <Route path="/account/profile" element={<MemberProfile/>}/>
+                                <Route path="/account/pw" element={<ChangeMemberPassword/>}/>
+                                <Route path="/oauth/redirected" element={<OAuth2RedirectPage/>}/>
                             </Routes>
                         </div>
                     </BrowserRouter>

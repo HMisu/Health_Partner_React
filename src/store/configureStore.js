@@ -1,11 +1,11 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import signSlice from "../slices/signSlice";
+import memberSlice from "../slices/memberSlice";
 import storageSession from "redux-persist/lib/storage/session";
 import {persistReducer} from "redux-persist";
 import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist/es/constants";
 
 const reducers = combineReducers({
-    member: signSlice.reducer
+    member: memberSlice.reducer
 });
 
 const persistConfig = {

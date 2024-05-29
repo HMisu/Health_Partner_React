@@ -1,7 +1,7 @@
 import TodoModal from "../../components/todo/TodoModal";
 import RecommendModal from "../../components/recommend/RecommendModal";
 import React, {useEffect} from "react";
-import UserInfoModal from "../../components/user/UserInfoModal";
+import MemberProfileModal from "../../components/member/MemberProfileModal";
 import LeftSection from "../../components/ui/layout/LeftSection";
 import RightSection from "../../components/ui/layout/RightSection";
 
@@ -27,7 +27,7 @@ const Home = () => {
     return (
         <>
             <LeftSection>
-                <UserInfoModal/>
+                <MemberProfileModal/>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TodoModal/>
                 </LocalizationProvider>

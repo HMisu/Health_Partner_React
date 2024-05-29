@@ -1,11 +1,11 @@
 import {Grid, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import '../../scss/Sign.scss';
 import axios from "axios";
 import Button from "../../components/ui/Button";
 import {handleNumInputChange} from "../../util/handleNumInputChange";
 import {useDispatch} from "react-redux";
-import {signup} from "../../slices/signSlice";
+import {signup} from "../../slices/memberSlice";
 
 const SignUp = () => {
     const [form, setForm] = useState({
@@ -18,33 +18,33 @@ const SignUp = () => {
         height: '',
         weight: ''
     });
-
     const [emailChk, setEmailChk] = useState(false);
     const [pwValidation, setPwValidation] = useState(false);
     const [pwChk, setPwChk] = useState(false);
+    const [showPasswordValidation, setShowPasswordValidation] = useState(false);
+    const [showPasswordCheckFail, setShowPasswordCheckFail] = useState(false);
+    const [showPasswordCheckSuccess, setShowPasswordCheckSuccess] = useState(false);
+
     const dispatch = useDispatch();
 
     const handleInputChange = useCallback((event) => {
         handleNumInputChange(event);
     }, []);
 
-    useEffect(() => {
-        console.log("emailChk : " + emailChk);
-    }, [emailChk]);
-
     const textFieldChanged = useCallback((e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
+        const {name, value} = e.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            [name]: value
+        }));
 
-        if (e.target.name === 'password' || e.target.name === 'passwordChk') {
-            const isMatch = e.target.value === form.passwordChk || e.target.value === form.password;
+        if (name === 'password' || name === 'passwordChk') {
+            const isMatch = name === 'password' ? value === form.passwordChk : value === form.password;
             setPwChk(isMatch);
-            document.querySelector("#password-check-success").style.display = isMatch ? 'block' : 'none';
-            document.querySelector("#password-check-fail").style.display = isMatch ? 'none' : 'block';
+            setShowPasswordCheckSuccess(isMatch);
+            setShowPasswordCheckFail(!isMatch);
         }
-    }, [form]);
+    }, [form.password, form.passwordChk]);
 
     const sendEmail = useCallback(async () => {
         if (form.email === '') {
@@ -55,12 +55,17 @@ const SignUp = () => {
 
         try {
             const response = await axios.post(`http://localhost:9090/member/email`, {email: form.email});
-            if (response.data.item.emailCheckResult === 'invalid email') {
+
+            const emailCheckResult = response.data.item ? response.data.item.emailCheckResult : null;
+
+            if (emailCheckResult === 'invalid email') {
                 alert("중복된 이메일입니다. 다른 이메일로 변경해주세요.");
                 document.querySelector("#email").focus();
-            } else {
+            } else if (emailCheckResult === 'available email') {
                 alert("인증 메일이 발송되었습니다. 인증 코드를 입력해주세요.");
                 document.querySelectorAll(".verify-email").forEach(element => element.style.display = 'block');
+            } else {
+                alert("알 수 없는 상태입니다. 관리자에게 문의하세요.");
             }
         } catch (e) {
             console.log(e);
@@ -97,22 +102,16 @@ const SignUp = () => {
     const validatePassword = (password) => {
         return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(password);
     };
-    const passwordBlur = useCallback((e) => {
+
+    const passwordBlur = useCallback(() => {
         if (validatePassword(form.password)) {
             setPwValidation(true);
-            document.querySelector("#password-validation").style.display = "none";
+            setShowPasswordValidation(false);
         } else {
             setPwValidation(false);
-            document.querySelector("#password-validation").style.display = "block";
-            document.querySelector("#password").focus();
+            setShowPasswordValidation(true);
         }
-
-        if (form.passwordChk !== '' && form.password !== form.passwordChk) {
-            document.querySelector("#password-check-fail").style.display = "block";
-        } else {
-            document.querySelector("#password-check-fail").style.display = "none";
-        }
-    }, [form.password, form.passwordChk]);
+    }, [form.password]);
 
     const handleSignUp = useCallback((e) => {
         e.preventDefault();
@@ -172,14 +171,16 @@ const SignUp = () => {
                             label='Password'
                             value={form.password}
                             onChange={textFieldChanged} onBlur={passwordBlur}/>
-                        <Typography
-                            name='password-validation'
-                            id='password-validation'
-                            component='p'
-                            variant='string'
-                            style={{display: 'none', color: '#fd565f'}}>
-                            비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.
-                        </Typography>
+                        {showPasswordValidation && (
+                            <Typography
+                                name='password-validation'
+                                id='password-validation'
+                                component='p'
+                                variant='string'
+                                style={{color: '#fd565f'}}>
+                                비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.
+                            </Typography>
+                        )}
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -191,22 +192,26 @@ const SignUp = () => {
                             fullWidth
                             value={form.passwordChk}
                             onChange={textFieldChanged}/>
-                        <Typography
-                            name='password-check-success'
-                            id='password-check-success'
-                            component='p'
-                            variant='string'
-                            style={{display: 'none', color: '#3ed7a0'}}>
-                            비밀번호가 일치합니다.
-                        </Typography>
-                        <Typography
-                            name='password-check-fail'
-                            id='password-check-fail'
-                            component='p'
-                            variant='string'
-                            style={{display: 'none', color: '#fd565f'}}>
-                            비밀번호가 일치하지 않습니다.
-                        </Typography>
+                        {showPasswordCheckSuccess && (
+                            <Typography
+                                name='password-check-success'
+                                id='password-check-success'
+                                component='p'
+                                variant='string'
+                                style={{color: '#3ed7a0'}}>
+                                비밀번호가 일치합니다.
+                            </Typography>
+                        )}
+                        {showPasswordCheckFail && (
+                            <Typography
+                                name='password-check-fail'
+                                id='password-check-fail'
+                                component='p'
+                                variant='string'
+                                style={{color: '#fd565f'}}>
+                                비밀번호가 일치하지 않습니다.
+                            </Typography>
+                        )}
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -217,29 +222,29 @@ const SignUp = () => {
                     <Grid item xs={6}>
                         <TextField
                             name='age' variant='outlined' fullWidth required
-                            id='age' label='Age' value={form.age}
+                            id='age' label='Age' type="number" value={form.age}
                             onChange={textFieldChanged}
                             inputProps={{maxLength: 3, onInput: handleInputChange}}/>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             name='height' variant='outlined' fullWidth required
-                            id='height' label='Height' value={form.height}
+                            id='height' label='Height' type="text" value={form.height}
                             onChange={textFieldChanged}
                             InputProps={{
                                 endAdornment: <InputAdornment position="start">cm</InputAdornment>,
                             }}
-                            inputProps={{maxLength: 3, onInput: handleInputChange}}/>
+                            inputProps={{maxLength: 4, onInput: handleInputChange}}/>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             name='weight' variant='outlined' fullWidth required
-                            id='weight' label='Weight' value={form.weight}
+                            id='weight' label='Weight' type="text" value={form.weight}
                             onChange={textFieldChanged}
                             InputProps={{
-                                endAdornment: <InputAdornment position="start">cm</InputAdornment>,
+                                endAdornment: <InputAdornment position="start">kg</InputAdornment>,
                             }}
-                            inputProps={{maxLength: 3, onInput: handleInputChange}}/>
+                            inputProps={{maxLength: 4, onInput: handleInputChange}}/>
                     </Grid>
                     <Grid item xs={12}>
                         <Button text="Sign Up" type={'positive'} submit={true}/>
