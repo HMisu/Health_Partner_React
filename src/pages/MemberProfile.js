@@ -1,7 +1,19 @@
 import React, {useCallback, useEffect, useState} from "react";
 import '../scss/Sign.scss';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
-import {FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    Select,
+    TextField
+} from "@mui/material";
 import Button from "../components/ui/Button";
 import {handleNumInputChange} from "../util/handleNumInputChange";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,6 +25,7 @@ const MemberProfile = () => {
         email: '',
         imgAddress: '',
         name: '',
+        gender: 'female',
         age: '',
         height: '',
         weight: '',
@@ -52,6 +65,14 @@ const MemberProfile = () => {
         }));
     }, []);
 
+    const handleGenderChange = useCallback((event) => {
+        const {value} = event.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            gender: value
+        }));
+    }, []);
+
     const handleProfileImageModify = useCallback(() => {
         const fileInput = document.getElementById('fileInput');
         fileInput.click();
@@ -86,8 +107,10 @@ const MemberProfile = () => {
                         imgAddress: profile.imgAddress || '',
                         name: profile.name || '',
                         age: profile.age || '',
+                        gender: profile.gender || 'female',
                         height: profile.height || '',
-                        weight: profile.weight || ''
+                        weight: profile.weight || '',
+                        activityLevel: profile.activityLevel || ''
                     });
                 })
                 .catch((error) => {
@@ -105,7 +128,7 @@ const MemberProfile = () => {
                     ) : (
                         <img src={process.env.PUBLIC_URL + '/assets/ico_member_default.png'} alt="member_profile_img"/>
                     )}
-                    {(provider !== 'kakao' || provider !== 'google') && (
+                    {!provider && (
                         <button onClick={handleProfileImageModify}><AddAPhotoRoundedIcon/></button>
                     )}
                     <input type="file" id="fileInput" style={{display: "none"}} accept="image/*"
@@ -122,7 +145,7 @@ const MemberProfile = () => {
                                 id='email' label='Email' value={form.email}
                                 onChange={textFieldChanged} disabled={true}/>
                         </Grid>
-                        {(provider !== 'kakao' || provider !== 'google') && (
+                        {!provider && (
                             <>
                                 <Grid item xs={10}>
                                     <span className="change-password">Change Password</span>
@@ -145,6 +168,19 @@ const MemberProfile = () => {
                                 id='age' label='Age' type="number" value={form.age}
                                 onChange={textFieldChanged}
                                 inputProps={{maxLength: 3}}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl>
+                                <FormLabel id="gender">Gender</FormLabel>
+                                <RadioGroup
+                                    aria-labelledby="gender"
+                                    value={form.gender}
+                                    name="gender"
+                                    onChange={handleGenderChange}>
+                                    <FormControlLabel value="female" control={<Radio/>} label="Female"/>
+                                    <FormControlLabel value="male" control={<Radio/>} label="Male"/>
+                                </RadioGroup>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField

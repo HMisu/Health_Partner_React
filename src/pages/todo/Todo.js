@@ -15,6 +15,7 @@ const Todo = () => {
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const [activeTab, setActiveTab] = useState(0);
     const [waterByDate, setWaterByDate] = useState(0);
+    const [needAdditionalInfo, setNeedAdditionalInfo] = useState(false); // 추가적인 회원 정보 입력 필요 여부
 
     const [recommendFoods, setRecommendFoods] = useState({
         foodList: [],
@@ -50,16 +51,19 @@ const Todo = () => {
                     const todoResponse = await dispatch(process(date));
                     dispatch(setTodos(todoResponse.payload.todoList));
                     const recommendResponse = await dispatch(getRecommendFoods());
-                    setRecommendFoods(recommendResponse.payload);
-                    console.log(recommendResponse.payload);
+                    if (recommendResponse.payload && recommendResponse.payload.foodList) {
+                        setRecommendFoods(recommendResponse.payload);
+                    } else if (recommendResponse.error) {
+                        setNeedAdditionalInfo(true);
+                    }
                 } catch (error) {
-                    console.error("초기 데이터를 가져오는 중 오류 발생:", error);
+                    console.error("Error fetching initial data:", error);
+                    setNeedAdditionalInfo(true);
                 }
             };
             fetchInitialData();
         }
     }, [isSignIn, dispatch]);
-
 
     const handleDateChange = useCallback(
         (newValue) => {
@@ -80,6 +84,7 @@ const Todo = () => {
 
     const TodoModalMemoized = React.memo(TodoModal);
     const RecommendModalMemoized = React.memo(RecommendModal);
+
     return (
         <>
             <LeftSection>
@@ -95,9 +100,16 @@ const Todo = () => {
                 </LocalizationProvider>
             </LeftSection>
             <RightSection>
-                <RecommendModalMemoized recommendFoods={recommendFoods}/>
+                {needAdditionalInfo ? (
+                    <div>추가적인 회원 정보 입력이 필요합니다.</div>
+                ) : recommendFoods && recommendFoods.foodList && recommendFoods.foodList.length > 0 ? (
+                    <RecommendModalMemoized recommendFoods={recommendFoods}/>
+                ) : (
+                    <></>
+                )}
             </RightSection>
-        </>);
+        </>
+    );
 };
 
 export default Todo;
