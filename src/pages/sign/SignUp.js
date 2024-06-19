@@ -1,11 +1,25 @@
-import {Grid, InputAdornment, TextField, Typography} from "@mui/material";
-import React, {useCallback, useState} from "react";
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    Select,
+    TextField,
+    Typography
+} from "@mui/material";
+import React, {useCallback, useEffect, useState} from "react";
 import '../../scss/Sign.scss';
 import axios from "axios";
 import Button from "../../components/ui/Button";
 import {handleNumInputChange} from "../../util/handleNumInputChange";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signup} from "../../slices/memberSlice";
+import {useNavigate} from "react-router-dom";
 
 const SignUp = () => {
     const [form, setForm] = useState({
@@ -14,9 +28,11 @@ const SignUp = () => {
         password: '',
         passwordChk: '',
         name: '',
+        gender: 'female',
         age: '',
         height: '',
-        weight: ''
+        weight: '',
+        activityLevel: ''
     });
     const [emailChk, setEmailChk] = useState(false);
     const [pwValidation, setPwValidation] = useState(false);
@@ -26,9 +42,38 @@ const SignUp = () => {
     const [showPasswordCheckSuccess, setShowPasswordCheckSuccess] = useState(false);
 
     const dispatch = useDispatch();
+    const isSignIn = useSelector(state => state.member.isSignIn);
 
-    const handleInputChange = useCallback((event) => {
-        handleNumInputChange(event);
+    const navi = useNavigate();
+
+    useEffect(() => {
+        if (isSignIn) {
+            navi("/dashboard");
+        }
+    }, [isSignIn, navi]);
+
+    const memoizedHandleInputChangeHeight = useCallback((event) => {
+        handleNumInputChange(event, 3, 2);
+    }, []);
+
+    const memoizedHandleInputChangeWeight = useCallback((event) => {
+        handleNumInputChange(event, 2, 2);
+    }, []);
+
+    const handleActivityLevelChange = useCallback((event) => {
+        const {value} = event.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            activityLevel: value
+        }));
+    }, []);
+
+    const handleGenderChange = useCallback((event) => {
+        const {value} = event.target;
+        setForm(prevForm => ({
+            ...prevForm,
+            gender: value
+        }));
     }, []);
 
     const textFieldChanged = useCallback((e) => {
@@ -68,7 +113,6 @@ const SignUp = () => {
                 alert("알 수 없는 상태입니다. 관리자에게 문의하세요.");
             }
         } catch (e) {
-            console.log(e);
             alert("에러 발생. 관리자에게 문의하세요.");
         }
     }, [form.email]);
@@ -130,6 +174,13 @@ const SignUp = () => {
         if (!pwChk) {
             alert("비밀번호가 일치하지 않습니다.");
             document.querySelector("#passwordChk").focus();
+            return;
+        }
+
+
+        if (form.activityLevel === '') {
+            alert("활동 수준을 선택해주세요");
+            document.querySelector("#activityLevel").focus();
             return;
         }
 
@@ -224,7 +275,20 @@ const SignUp = () => {
                             name='age' variant='outlined' fullWidth required
                             id='age' label='Age' type="number" value={form.age}
                             onChange={textFieldChanged}
-                            inputProps={{maxLength: 3, onInput: handleInputChange}}/>
+                            inputProps={{maxLength: 3}}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl>
+                            <FormLabel id="gender">Gender</FormLabel>
+                            <RadioGroup
+                                aria-labelledby="gender"
+                                defaultValue="female"
+                                name="radio-buttons-group"
+                                onChange={handleGenderChange}>
+                                <FormControlLabel value="female" control={<Radio/>} label="Female"/>
+                                <FormControlLabel value="male" control={<Radio/>} label="Male"/>
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -234,7 +298,7 @@ const SignUp = () => {
                             InputProps={{
                                 endAdornment: <InputAdornment position="start">cm</InputAdornment>,
                             }}
-                            inputProps={{maxLength: 4, onInput: handleInputChange}}/>
+                            inputProps={{maxLength: 6, onInput: memoizedHandleInputChangeHeight}}/>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -244,7 +308,26 @@ const SignUp = () => {
                             InputProps={{
                                 endAdornment: <InputAdornment position="start">kg</InputAdornment>,
                             }}
-                            inputProps={{maxLength: 4, onInput: handleInputChange}}/>
+                            inputProps={{maxLength: 5, onInput: memoizedHandleInputChangeWeight}}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth>
+                            <InputLabel id="activityLevel">Activity Level</InputLabel>
+                            <Select
+                                labelId="activityLevel"
+                                id="activityLevel"
+                                value={form.activityLevel}
+                                label="Activity Level"
+                                onChange={handleActivityLevelChange}
+                            >
+                                <MenuItem value={"Very Low"}>Very low (almost no exercise)</MenuItem>
+                                <MenuItem value={"Low"}>Low (light exercise 1-3 times per week)</MenuItem>
+                                <MenuItem value={"Usually"}>Usually (exercise 3-5 times a week)</MenuItem>
+                                <MenuItem value={"High"}>High (exercise 6-7 times per week)</MenuItem>
+                                <MenuItem value={"Very High"}>Very High (Very vigorous exercise or manual
+                                    labor)</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <Button text="Sign Up" type={'positive'} submit={true}/>

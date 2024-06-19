@@ -7,7 +7,6 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import Header from "./components/Header";
 import SignIn from "./pages/sign/SignIn";
 import SignUp from "./pages/sign/SignUp";
-import Record from "./pages/record/Record";
 import Todo from "./pages/todo/Todo";
 import MemberProfile from "./pages/MemberProfile";
 import EditTodo from "./pages/todo/EditTodo";
@@ -37,9 +36,9 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<Information/>}/>
                                 <Route path="/dashboard" element={<Home/>}/>
-                                <Route path="/edit" element={<EditTodo/>}/>
                                 <Route path="/todo" element={<Todo/>}/>
-                                <Route path="/record" element={<Record/>}/>
+                                <Route path="/todo/write" element={<EditTodo/>}/>
+                                <Route path="/todo/d/:seq" element={<EditTodo/>}/>
                                 <Route path="/signin" element={<SignIn/>}/>
                                 <Route path="/signup" element={<SignUp/>}/>
                                 <Route path="/account/profile" element={<MemberProfile/>}/>

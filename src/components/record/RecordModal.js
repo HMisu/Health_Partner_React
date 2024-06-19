@@ -1,129 +1,51 @@
+import React from "react";
 import {getStringDate} from "../../util/date";
 import EditHeightWeight from "../todo/EditHeightWeight";
-import React from "react";
-import '../../scss/Record.scss';
+import "../../scss/Record.scss";
 import NivoChart from "../ui/NivoChart";
 
-const dummyData = [
-    {
-        "id": "Weight",
-        "color": "hsl(156, 70%, 50%)",
-        "data": [
-            {
-                "x": "2/20",
-                "y": 60
-            },
-            {
-                "x": "2/21",
-                "y": 60
-            },
-            {
-                "x": "2/22",
-                "y": 60
-            },
-            {
-                "x": "2/23",
-                "y": 60
-            },
-            {
-                "x": "2/24",
-                "y": 60
-            },
-            {
-                "x": "2/25",
-                "y": 60
-            },
-            {
-                "x": "2/26",
-                "y": 60
-            }
-        ]
-    },
-    {
-        "id": "Height",
-        "color": "hsl(275, 70%, 50%)",
-        "data": [
-            {
-                "x": "2/20",
-                "y": 172
-            },
-            {
-                "x": "2/21",
-                "y": 172
-            },
-            {
-                "x": "2/22",
-                "y": 172
-            },
-            {
-                "x": "2/23",
-                "y": 172.5
-            },
-            {
-                "x": "2/24",
-                "y": 172.3
-            },
-            {
-                "x": "2/25",
-                "y": 172
-            },
-            {
-                "x": "2/26",
-                "y": 172
-            }
-        ]
-    },
-    {
-        "id": "BMI",
-        "color": "hsl(116, 70%, 50%)",
-        "data": [
-            {
-                "x": "2/20",
-                "y": 20.28
-            },
-            {
-                "x": "2/21",
-                "y": 20.28
-            },
-            {
-                "x": "2/22",
-                "y": 20.28
-            },
-            {
-                "x": "2/23",
-                "y": 20.28
-            },
-            {
-                "x": "2/24",
-                "y": 20.25
-            },
-            {
-                "x": "2/25",
-                "y": 20.20
-            },
-            {
-                "x": "2/26",
-                "y": 19.05
-            }
-        ]
-    }
-];
+const RecordModal = React.memo(({record = []}) => {
+    const records = Array.isArray(record) ? record : [];
+    const lastItem = records.length > 0 ? records[records.length - 1] : null;
 
-const RecordModal = () => {
+    const getLastValue = (data, id) => {
+        const item = data.find((d) => d.id === id);
+        if (item && item.data && item.data.length > 0) {
+            const lastData = item.data[item.data.length - 1];
+            return lastData.y || "N/A";
+        }
+        return "N/A";
+    };
+
     return (
         <div className="RecordModal">
             <div>
-                Now Height :172.5ck Weight : xx.xxkg
-                <span className="date">Today : {getStringDate(new Date())}</span>
+                {lastItem ? (
+                    <>
+                        Now Height: {getLastValue(records, "Height")}cm
+                        Weight:{" "}
+                        {getLastValue(records, "Weight") !== "N/A"
+                            ? getLastValue(records, "Weight").toFixed(2)
+                            : "N/A"}
+                        kg
+                    </>
+                ) : (
+                    "No record available"
+                )}
+                <span className="date">Today: {getStringDate(new Date())}</span>
             </div>
             <div className="EditHeightWeight">
                 <EditHeightWeight/>
             </div>
-            <div style={{width: 'auto', height: '300px', margin: '0 auto'}}>
-                <NivoChart data={dummyData}/>
-            </div>
+            {records.length > 0 ? (
+                <div style={{width: "auto", height: "300px", margin: "0 auto"}}>
+                    <NivoChart data={records}/>
+                </div>
+            ) : (
+                <span>Please record your height and weight.</span>
+            )}
         </div>
     );
-};
+});
 
 export default RecordModal;

@@ -13,7 +13,7 @@ function OAuth2RedirectPage() {
     useEffect(() => {
         if (token) {
             dispatch(oauth2Signin(token));
-            navigate("/");
+            navigate("/dashboard");
         }
     }, [dispatch, token, navigate]);
 

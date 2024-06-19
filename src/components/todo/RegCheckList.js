@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {TextField} from "@mui/material";
 import Button from "../ui/Button";
 
-const RegCheckList = ({}) => {
+const RegCheckList = ({handleAddCheck}) => {
     const [inputValue, setInputValue] = useState("");
 
     const handleChange = (event) => {
@@ -11,19 +11,24 @@ const RegCheckList = ({}) => {
         }
     };
 
+    const handleClick = () => {
+        handleAddCheck(inputValue);
+        setInputValue("");
+    };
+
     return (
         <div className="EditCheckList">
             <div>
                 <div className="content">
                     <TextField
                         fullWidth
-                        label="Todo"
+                        label="CheckList"
                         name="check"
                         value={inputValue}
                         onChange={handleChange}
                     />
                 </div>
-                <Button text={"Reg"} type={"positive"}/>
+                <Button text={"Reg"} type={"positive"} onClick={handleClick}/>
             </div>
         </div>
     );

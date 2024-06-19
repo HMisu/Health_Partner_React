@@ -6,7 +6,7 @@ const CheckList = ({checklist}) => {
         <Box sx={{display: "flex"}}>
             <FormControl component="fieldset" variant="standard">
                 <FormGroup>
-                    {checklist.map((it, idx) => (
+                    {checklist && checklist.map((it, idx) => (
                         <FormControlLabel key={idx} name={"" + idx} control={<Checkbox/>} label={it}/>
                     ))}
                 </FormGroup>

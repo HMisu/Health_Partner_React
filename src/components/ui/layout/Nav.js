@@ -5,17 +5,21 @@ import React from "react";
 
 import '../../../scss/ui/layout/Nav.scss';
 
-const Nav = () => {
+const Nav = ({seq, onEditTodo, onDeleteTodo}) => {
     const navigate = useNavigate();
-    const id = 0;
     return (
         <div className="Nav">
             <div className="left">
                 <ArrowBackIosRoundedIcon onClick={() => navigate(-1)}/>
             </div>
             <div className="right">
-                {id === 0 ? <Button text="Edit"/>
-                    : <Button text={"Save"} type={"positive"}/>
+                {seq ? (
+                        <>
+                            <Button text="Edit" onClick={onEditTodo}/>
+                            <Button id="btn-delete" text="Delete" onClick={onDeleteTodo}/>
+                        </>)
+                    :
+                    <Button text="Save" type="positive" onClick={onEditTodo}/>
                 }
             </div>
         </div>

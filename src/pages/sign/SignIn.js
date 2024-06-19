@@ -4,7 +4,7 @@ import {Grid, TextField} from "@mui/material";
 import Button from "../../components/ui/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {signin} from "../../slices/memberSlice";
-import {useNavigate, useNavigationType} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import GoogleLoginBtn from "../../components/api/GoogleLoginBtn";
 import KakaoLoginBtn from "../../components/api/KakaoLoginBtn";
 
@@ -15,7 +15,7 @@ const SignIn = () => {
     });
 
     const navi = useNavigate();
-    const naviType = useNavigationType();
+    const {state} = useLocation();
 
     const isSignIn = useSelector(state => state.member.isSignIn);
 
@@ -23,11 +23,11 @@ const SignIn = () => {
 
     useEffect(() => {
         if (isSignIn) {
-            navi("/");
+            navi(state || "/dashboard");
         }
-    }, [isSignIn]);
+    }, [isSignIn, navi, state]);
 
-    const textFiledchanged = useCallback((e) => {
+    const textFiledChanged = useCallback((e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value
@@ -38,9 +38,6 @@ const SignIn = () => {
         e.preventDefault();
 
         dispatch(signin(form));
-
-        if (naviType === "PUSH") navi(-1);
-        else navi("/");
     }, [form, dispatch]);
 
     return (
@@ -54,13 +51,13 @@ const SignIn = () => {
                         <TextField
                             name='email' variant='outlined' fullWidth required
                             id='email' label='Email' value={form.email} autoFocus
-                            onChange={textFiledchanged}/>
+                            onChange={textFiledChanged}/>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             type="password" name='password' variant='outlined' fullWidth required
                             id='password' label='Password' value={form.password}
-                            onChange={textFiledchanged}/>
+                            onChange={textFiledChanged}/>
                     </Grid>
                     <Grid item xs={12}>
                         <Button text={"Sign In"} type={"positive"} submit={true}/>
