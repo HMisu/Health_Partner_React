@@ -37,12 +37,20 @@
 
 .EatingMealList {
   display: flex;
+  width: 100%;
+
+  > div {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
 
   .add-meal {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
+    width: 205px;
+    margin-right: 10px;
     border-radius: 8px;
     background-color: white;
     border: 1px solid $bright-navy;
@@ -95,7 +103,19 @@
     width: 100%;
 
     .kcal {
+      margin-left: 5px;
+    }
+
+    button {
       float: right;
+      border: none;
+      border-radius: 8px;
+      background-color: white;
+
+      svg {
+        color: black;
+        font-size: 12px;
+      }
     }
   }
 }

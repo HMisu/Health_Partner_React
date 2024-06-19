@@ -161,6 +161,47 @@ export const modifyProfileImg = createAsyncThunk(
     }
 );
 
+export const modifyHeightAndWeight = createAsyncThunk(
+    'member/modifyHeightAndWeight',
+    async (member, thunkAPI) => {
+        try {
+            const response = await axios.put(
+                `${API_URL}/member/height-weight/modify`,
+                member,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const getBmiGraph = createAsyncThunk(
+    'member/getBmiGraph',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `${API_URL}/member/bmi`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                    }
+                }
+            );
+
+            return response.data.items;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
 const memberSlice = createSlice({
     name: 'member',
     initialState: {
@@ -192,6 +233,8 @@ const memberSlice = createSlice({
             }
 
             sessionStorage.setItem("ACCESS_TOKEN", accessToken);
+
+            window.location.href = "/dashboard";
 
             return {
                 ...state,
@@ -242,6 +285,7 @@ const memberSlice = createSlice({
         });
         builder.addCase(signout.fulfilled, (state, action) => {
             sessionStorage.removeItem("ACCESS_TOKEN");
+            window.location.href = '/';
 
             return {
                 ...state,
@@ -285,7 +329,12 @@ const memberSlice = createSlice({
 
             return state;
         });
+        builder.addCase(modifyHeightAndWeight.fulfilled, (state, action) => {
+            window.location.reload();
+
+            return state;
+        });
     }
 });
 
-export default memberSlice;
+export default memberSlice.reducer;

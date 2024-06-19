@@ -1,13 +1,13 @@
 import FoodItem from "./FoodItem";
 import React from "react";
 
-const FoodList = () => {
+const FoodList = ({foodList}) => {
     return (
         <div className="FoodList">
-            <FoodItem key={1}/>
-            <FoodItem key={2}/>
-            <FoodItem key={3}/>
-            <FoodItem key={4}/>
+            {foodList && (
+                foodList.map((item, index) => (
+                    <FoodItem key={index} food={item}/>
+                )))}
         </div>
     );
 };

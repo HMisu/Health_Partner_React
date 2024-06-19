@@ -1,5 +1,4 @@
 import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
-import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import {SvgIcon} from "@mui/material";
 import React, {useCallback} from "react";
@@ -9,6 +8,8 @@ import Menu from "./ui/Menu";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
 import {signout} from "../slices/memberSlice";
+import {setIntake} from "../slices/waterSlice";
+import {setTodos} from "../slices/todoSlice";
 
 const Header = () => {
     const location = useLocation();
@@ -21,9 +22,11 @@ const Header = () => {
 
     const handleLogout = useCallback(() => {
         dispatch(signout());
+        dispatch(setIntake(0));
+        dispatch(setTodos([]));
         navi("/signin");
-    }, [dispatch]);
-
+    }, [dispatch, navi]);
+    
     return (
         <header>
             <div className="logo">
@@ -35,8 +38,7 @@ const Header = () => {
             <nav>
                 <ul>
                     <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/dashboard"}/>
-                    <Menu text={<SvgIcon component={EventNoteOutlinedIcon}/>} href={"/todo"}/>
-                    <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/record"}/>
+                    <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/todo"}/>
                 </ul>
             </nav>
             <div className="a-container">
