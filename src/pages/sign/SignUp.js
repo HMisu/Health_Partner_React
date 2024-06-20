@@ -125,13 +125,13 @@ const SignUp = () => {
         }
 
         try {
-            await axios.get(
-                `http://localhost:9090/member/email/verify`,
+            await axios.get('http://localhost:9090/member/email/verify',
                 {
-                    email: form.email,
-                    verifyCode: form.verifyCode
-                }
-            );
+                    params: {
+                        email: form.email,
+                        verifyCode: form.verifyCode
+                    }
+                });
             setEmailChk(true);
 
         } catch (error) {

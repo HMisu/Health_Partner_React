@@ -1,3 +1,4 @@
+import React from "react";
 import {ResponsiveLine} from "@nivo/line";
 
 const NivoChart = ({data = []}) => (
@@ -71,4 +72,4 @@ const NivoChart = ({data = []}) => (
     />
 );
 
-export default NivoChart;
+export default React.memo(NivoChart);
