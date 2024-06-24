@@ -74,6 +74,29 @@ export const signout = createAsyncThunk(
     }
 );
 
+const REACT_APP_KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+const KAKAO_LOGOUT_REDIRECT_URI = "/";
+
+export const kakaoSignout = createAsyncThunk(
+    'member/kakaoSignout',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.get(
+                `https://kauth.kakao.com/oauth/logout?client_id=${REACT_APP_KAKAO_REST_API_KEY}&logout_redirect_uri=${KAKAO_LOGOUT_REDIRECT_URI}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                    }
+                }
+            );
+
+            return response.data.item;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
 export const getMemberProfile = createAsyncThunk(
     'member/getMemberProfile',
     async (_, thunkAPI) => {
@@ -182,12 +205,12 @@ export const modifyHeightAndWeight = createAsyncThunk(
     }
 );
 
-export const getBmiGraph = createAsyncThunk(
-    'member/getBmiGraph',
-    async (_, thunkAPI) => {
+export const deleteMember = createAsyncThunk(
+    'member/deleteMember',
+    async (email, thunkAPI) => {
         try {
-            const response = await axios.get(
-                `${API_URL}/member/bmi`,
+            const response = await axios.delete(
+                `${API_URL}/member/${email}`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
@@ -195,7 +218,44 @@ export const getBmiGraph = createAsyncThunk(
                 }
             );
 
-            return response.data.items;
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const deleteGoogleMember = createAsyncThunk(
+    'member/deleteGoogleMember',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.post(
+                `https://accounts.google.com/o/oauth2/revoke?token=${sessionStorage.getItem("ACCESS_TOKEN")}`
+            );
+
+            return response.data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const deleteKakaoMember = createAsyncThunk(
+    'member/deleteKakaoMember',
+    async (_, thunkAPI) => {
+        try {
+            const response = await axios.post(
+                'https://kapi.kakao.com/v1/user/unlink',
+                {},
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                    }
+                }
+            );
+
+            return response.data;
         } catch (e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -208,7 +268,8 @@ const memberSlice = createSlice({
         isSignIn: false,
         loginMemberEmail: "",
         loginMemberName: "",
-        loginMemberImage: ""
+        loginMemberImage: "",
+        loginMemberProvider: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -241,7 +302,8 @@ const memberSlice = createSlice({
                 isSignIn: true,
                 loginMemberEmail: action.payload.email,
                 loginMemberName: action.payload.name,
-                loginMemberImage: action.payload.imgAddress
+                loginMemberImage: action.payload.imgAddress,
+                loginMemberProvider: action.payload.provider
             };
         });
         builder.addCase(signin.rejected, (state, action) => {
@@ -267,7 +329,8 @@ const memberSlice = createSlice({
                 isSignIn: true,
                 loginMemberEmail: action.payload.email,
                 loginMemberName: action.payload.name,
-                loginMemberImage: action.payload.imgAddress
+                loginMemberImage: action.payload.imgAddress,
+                loginMemberProvider: action.payload.provider
             };
         });
         builder.addCase(oauth2Signin.rejected, (state, action) => {
@@ -292,7 +355,21 @@ const memberSlice = createSlice({
                 isSignIn: false,
                 loginMemberEmail: "",
                 loginMemberName: "",
-                loginMemberImage: ""
+                loginMemberImage: "",
+                loginMemberProvider: null
+            }
+        });
+        builder.addCase(kakaoSignout.fulfilled, (state, action) => {
+            sessionStorage.removeItem("ACCESS_TOKEN");
+            window.location.href = '/';
+
+            return {
+                ...state,
+                isSignIn: false,
+                loginMemberEmail: "",
+                loginMemberName: "",
+                loginMemberImage: "",
+                loginMemberProvider: null
             }
         });
         builder.addCase(modifyPassword.fulfilled, (state, action) => {
@@ -333,6 +410,19 @@ const memberSlice = createSlice({
             window.location.reload();
 
             return state;
+        });
+        builder.addCase(deleteMember.fulfilled, (state, action) => {
+            sessionStorage.removeItem("ACCESS_TOKEN");
+
+            alert("회원 탈퇴가 완료되었습니다.");
+
+            return {
+                ...state,
+                isSignIn: false,
+                loginMemberEmail: "",
+                loginMemberName: "",
+                loginMemberImage: ""
+            }
         });
     }
 });
