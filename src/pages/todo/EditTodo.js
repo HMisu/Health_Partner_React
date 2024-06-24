@@ -28,7 +28,7 @@ const EditTodo = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
         if (isWritePage) {
             const date = new Date();
@@ -172,6 +172,9 @@ const EditTodo = () => {
     }, []);
 
     const handleTodoEdit = useCallback(() => {
+        let formattedDate = dayjs(todo.date);
+        todo.date = formattedDate.format('YYYY-MM-DD HH:mm:ss.SSS');
+        
         if (seq) {
             dispatch(editTodo({todo, deleteMealList}));
         } else {
@@ -180,8 +183,6 @@ const EditTodo = () => {
             } else if (todo.diary === '') {
                 alert('다이어리를 입력해주세요.');
             } else {
-                const date = new Date(todo.date);
-                todo.date = new Date(date.getTime() + (9 * 60 * 60 * 1000)).toISOString().replace('T', ' ').replace('Z', '');
                 dispatch(regTodo(todo));
             }
         }

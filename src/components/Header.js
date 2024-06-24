@@ -7,7 +7,7 @@ import '../scss/Header.scss';
 import Menu from "./ui/Menu";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {signout} from "../slices/memberSlice";
+import {kakaoSignout, signout} from "../slices/memberSlice";
 import {setIntake} from "../slices/waterSlice";
 import {setTodos} from "../slices/todoSlice";
 
@@ -19,14 +19,19 @@ const Header = () => {
 
     const isSignIn = useSelector(state => state.member.isSignIn);
     const loginMemberImage = useSelector(state => state.member.loginMemberImage);
+    const loginMemberProvider = useSelector(state => state.member.loginMemberProvider);
 
     const handleLogout = useCallback(() => {
-        dispatch(signout());
         dispatch(setIntake(0));
         dispatch(setTodos([]));
-        navi("/signin");
-    }, [dispatch, navi]);
-    
+
+        if (loginMemberProvider === "kakao") {
+            dispatch(kakaoSignout());
+        } else {
+            dispatch(signout());
+        }
+    }, [dispatch]);
+
     return (
         <header>
             <div className="logo">

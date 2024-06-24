@@ -17,7 +17,14 @@ import {
 import Button from "../components/ui/Button";
 import {handleNumInputChange} from "../util/handleNumInputChange";
 import {useDispatch, useSelector} from "react-redux";
-import {getMemberProfile, modifyProfile, modifyProfileImg} from "../slices/memberSlice";
+import {
+    deleteGoogleMember,
+    deleteKakaoMember,
+    deleteMember,
+    getMemberProfile,
+    modifyProfile,
+    modifyProfileImg
+} from "../slices/memberSlice";
 import {useNavigate} from "react-router-dom";
 
 const MemberProfile = () => {
@@ -32,13 +39,12 @@ const MemberProfile = () => {
         activityLevel: ''
     });
 
-    const [provider, setProvider] = useState(null);
-
     const dispatch = useDispatch();
     const navi = useNavigate();
 
     const loginMemberEmail = useSelector(state => state.member.loginMemberEmail);
     const loginMemberName = useSelector(state => state.member.loginMemberName);
+    const loginMemberProvider = useSelector(state => state.member.loginMemberProvider);
 
     const textFieldChanged = useCallback((e) => {
         const {name, value} = e.target;
@@ -96,12 +102,25 @@ const MemberProfile = () => {
         dispatch(modifyProfile(form));
     }, [form, dispatch]);
 
+    const handleWithdrawal = useCallback(() => {
+        if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+            if (loginMemberProvider === "google") {
+                dispatch(deleteGoogleMember());
+            } else if (loginMemberProvider === "kakao") {
+                dispatch(deleteKakaoMember());
+            }
+
+            dispatch(deleteMember(loginMemberEmail));
+
+            navi("/");
+        }
+    }, [dispatch, navi, loginMemberEmail]);
+
     useEffect(() => {
         if (loginMemberEmail) {
             dispatch(getMemberProfile())
                 .then((result) => {
                     const profile = result.payload || {};
-                    setProvider(profile.provider || null);
                     setForm({
                         email: profile.email || '',
                         imgAddress: profile.imgAddress || '',
@@ -128,7 +147,7 @@ const MemberProfile = () => {
                     ) : (
                         <img src={process.env.PUBLIC_URL + '/assets/ico_member_default.png'} alt="member_profile_img"/>
                     )}
-                    {!provider && (
+                    {!loginMemberProvider && (
                         <button onClick={handleProfileImageModify}><AddAPhotoRoundedIcon/></button>
                     )}
                     <input type="file" id="fileInput" style={{display: "none"}} accept="image/*"
@@ -145,7 +164,7 @@ const MemberProfile = () => {
                                 id='email' label='Email' value={form.email}
                                 onChange={textFieldChanged} disabled={true}/>
                         </Grid>
-                        {!provider && (
+                        {!loginMemberProvider && (
                             <>
                                 <Grid item xs={10}>
                                     <span className="change-password">Change Password</span>
@@ -226,6 +245,9 @@ const MemberProfile = () => {
                         </Grid>
                     </Grid>
                 </form>
+                <div className="withdrawal-text" onClick={handleWithdrawal}>
+                    Withdrawal of site membership
+                </div>
             </div>
 
         )
