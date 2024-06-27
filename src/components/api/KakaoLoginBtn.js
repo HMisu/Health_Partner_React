@@ -1,8 +1,10 @@
 import React from "react";
 
 const KakaoLoginBtn = () => {
+    const API_URL = process.env.REACT_APP_ROOT;
+
     const openKakaoLogin = () => {
-        window.location.href = "http://localhost:9090/oauth2/authorization/kakao";
+        window.location.href = `${API_URL}/oauth2/authorization/kakao`;
     }
 
     return (

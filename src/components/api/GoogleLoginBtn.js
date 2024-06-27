@@ -1,8 +1,10 @@
 import React from "react";
 
 const GoogleSignInBtn = () => {
+    const API_URL = process.env.REACT_APP_ROOT;
+
     const handleLogin = () => {
-        window.location.href = "http://localhost:9090/oauth2/authorization/google";
+        window.location.href = `${API_URL}/oauth2/authorization/google`;
     }
 
     return (

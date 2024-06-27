@@ -98,8 +98,10 @@ const SignUp = () => {
             return;
         }
 
+        const API_URL = process.env.REACT_APP_ROOT;
+
         try {
-            const response = await axios.post(`http://localhost:9090/member/email`, {email: form.email});
+            const response = await axios.post(`${API_URL}/member/email`, {email: form.email});
 
             const emailCheckResult = response.data.item ? response.data.item.emailCheckResult : null;
 
@@ -124,8 +126,10 @@ const SignUp = () => {
             return;
         }
 
+        const API_URL = process.env.REACT_APP_ROOT;
+
         try {
-            await axios.get('http://localhost:9090/member/email/verify',
+            await axios.get(`${API_URL}/member/email/verify`,
                 {
                     params: {
                         email: form.email,
@@ -133,7 +137,6 @@ const SignUp = () => {
                     }
                 });
             setEmailChk(true);
-
         } catch (error) {
             if (error.response && error.response.data && error.response.data.errorCode === 102) {
                 alert("이메일 인증 코드가 일치하지 않습니다. 다시 시도하세요.");

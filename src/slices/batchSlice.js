@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios";
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const API_URL = "http://localhost:9090";
+const API_URL = process.env.REACT_APP_ROOT;
 
-export const process = createAsyncThunk(
+export const batchProcess = createAsyncThunk(
     'batch/process',
     async (date, thunkAPI) => {
         try {
