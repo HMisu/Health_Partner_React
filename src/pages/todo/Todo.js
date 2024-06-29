@@ -32,12 +32,6 @@ const Todo = () => {
     const todos = useSelector((state) => state.todo.todos);
     const isSignIn = useSelector((state) => state.member.isSignIn);
 
-    useEffect(() => {
-        if (!isSignIn) {
-            navi("/signin");
-        }
-    }, [isSignIn]);
-
     const fetchData = useCallback(async (idx, newDate) => {
         try {
             const formattedDate = dayjs(newDate).format("YYYY-MM-DD");

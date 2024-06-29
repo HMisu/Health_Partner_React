@@ -1,15 +1,15 @@
-import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import {SvgIcon} from "@mui/material";
 import React, {useCallback} from "react";
 
 import '../scss/Header.scss';
-import Menu from "./ui/Menu";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
 import {kakaoSignout, signout} from "../slices/memberSlice";
 import {setIntake} from "../slices/waterSlice";
 import {setTodos} from "../slices/todoSlice";
+import Menu from "./ui/Menu";
+import {SvgIcon} from "@mui/material";
+import SpaceDashboardOutlinedIcon from "@mui/icons-material/SpaceDashboardOutlined";
+import BookOutlinedIcon from "@mui/icons-material/BookOutlined";
 
 const Header = () => {
     const location = useLocation();
@@ -40,12 +40,14 @@ const Header = () => {
                     <span>HealthPartner</span>
                 </a>
             </div>
-            <nav>
-                <ul>
-                    <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/dashboard"}/>
-                    <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/todo"}/>
-                </ul>
-            </nav>
+            {isSignIn && (
+                <nav>
+                    <ul>
+                        <Menu text={<SvgIcon component={SpaceDashboardOutlinedIcon}/>} href={"/dashboard"}/>
+                        <Menu text={<SvgIcon component={BookOutlinedIcon}/>} href={"/todo"}/>
+                    </ul>
+                </nav>
+            )}
             <div className="a-container">
                 {!isSignIn && (
                     <>
