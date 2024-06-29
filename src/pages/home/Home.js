@@ -13,13 +13,16 @@ import TodoModal from "../../components/todo/TodoModal";
 import {setIntake, updateWaterIntake} from "../../slices/waterSlice";
 import dayjs from "dayjs";
 import {getTodosByDate, getTodosByWeeks, setTodos} from "../../slices/todoSlice";
-import {process} from "../../slices/batchSlice";
+import {batchProcess} from "../../slices/batchSlice";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     const [record, setRecord] = useState(null);
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const [activeTab, setActiveTab] = useState(0);
     const [waterByDate, setWaterByDate] = useState(0);
+
+    const navi = useNavigate();
 
     const dispatch = useDispatch();
     const todos = useSelector((state) => state.todo.todos);
@@ -45,7 +48,7 @@ const Home = () => {
             const fetchInitialData = async () => {
                 try {
                     const date = dayjs().format("YYYY-MM-DD");
-                    const response = await dispatch(process(date));
+                    const response = await dispatch(batchProcess(date));
                     setRecord(response.payload.bmiGraphData);
                     dispatch(setIntake(response.payload.waterIntake));
                     dispatch(setTodos(response.payload.todoList));
@@ -54,6 +57,8 @@ const Home = () => {
                 }
             };
             fetchInitialData();
+        } else {
+            navi("/signin");
         }
     }, [isSignIn, dispatch]);
 

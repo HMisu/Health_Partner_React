@@ -78,7 +78,7 @@ const Header = () => {
                 )}
 
                 {location.pathname === '/' && (
-                    <a className="github" href="https://github.com/HMisu/Health_Partner">
+                    <a className="github" href="https://github.com/HMisu/Health_Partner_React">
                         <img src={process.env.PUBLIC_URL + `/assets/github-mark.png`} alt="github_logo"/>
                     </a>
                 )}

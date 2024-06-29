@@ -7,9 +7,10 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import TodoModal from "../../components/todo/TodoModal";
 import dayjs from "dayjs";
 import {getTodosByDate, getTodosByWeeks, setTodos} from "../../slices/todoSlice";
-import {process} from "../../slices/batchSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getRecommendFoods} from "../../slices/foodSlice";
+import {batchProcess} from "../../slices/batchSlice";
+import {useNavigate} from "react-router-dom";
 
 const Todo = () => {
     const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -24,6 +25,8 @@ const Todo = () => {
         remainingCarbohydrates: 0,
         remainingFat: 0
     });
+
+    const navi = useNavigate();
 
     const dispatch = useDispatch();
     const todos = useSelector((state) => state.todo.todos);
@@ -48,7 +51,7 @@ const Todo = () => {
             const fetchInitialData = async () => {
                 try {
                     const date = dayjs().format("YYYY-MM-DD");
-                    const todoResponse = await dispatch(process(date));
+                    const todoResponse = await dispatch(batchProcess(date));
                     dispatch(setTodos(todoResponse.payload.todoList));
                     const recommendResponse = await dispatch(getRecommendFoods());
                     if (recommendResponse.payload && recommendResponse.payload.foodList) {
@@ -62,6 +65,8 @@ const Todo = () => {
                 }
             };
             fetchInitialData();
+        } else {
+            navi("/signin");
         }
     }, [isSignIn, dispatch]);
 

@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_ROOT;
 
 export const batchProcess = createAsyncThunk(
-    'batch/process',
+    'batch/batchProcess',
     async (date, thunkAPI) => {
         try {
             const response = await axios.get(
@@ -31,15 +31,15 @@ const batchSlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(process.pending, (state) => {
+        builder.addCase(batchProcess.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(process.fulfilled, (state, action) => {
+        builder.addCase(batchProcess.fulfilled, (state, action) => {
             state.loading = false;
             state.error = null;
         });
-        builder.addCase(process.rejected, (state, action) => {
+        builder.addCase(batchProcess.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         });
