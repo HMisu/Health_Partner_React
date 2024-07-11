@@ -116,7 +116,7 @@ Health-Partner
 - 사용자가 이름으로 식품을 검색하고, 식단을 아침, 점심, 저녁, 간식으로 구분하여 기록할 수 있습니다.
 ![h-todo](https://github.com/HMisu/Health_Partner_React/assets/37448404/28b867e1-6d4b-471d-8fb5-069d83a6b9c5)
 
-### [관리자 페이지:통계데이터]
+### [마이페이지]
 - 회원 정보와 프로필 이미지를 변경할 수 있습니다.
 - 일일 에너지 소비량을 계산하기 위한 활동 수준을 변경할 수 있습니다.
 ![h-my](https://github.com/HMisu/Health_Partner_React/assets/37448404/07108403-b7f1-413a-b49b-bf7c9f56c0e5)
